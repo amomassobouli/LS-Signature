@@ -441,7 +441,7 @@ img { max-width: 100%; display: block; }
   font-weight: 500;
 }
 
-/* ---- Zoho Booking iframe ---- */
+/* ---- Zoho Booking CTA ---- */
 .zoho-booking-wrap {
   background: var(--white);
   border-radius: 6px;
@@ -450,9 +450,36 @@ img { max-width: 100%; display: block; }
   box-shadow: 0 4px 24px var(--shadow);
 }
 
-.zoho-booking-wrap iframe {
-  display: block;
-  min-height: 580px;
+.booking-cta-box {
+  padding: 2.5rem 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 1rem;
+}
+
+.booking-cta-icon { font-size: 2.5rem; }
+
+.booking-cta-box h3 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.8rem;
+  font-weight: 300;
+  color: var(--text-dark);
+}
+
+.booking-cta-box p {
+  font-size: 0.88rem;
+  color: var(--text-mid);
+  line-height: 1.9;
+  max-width: 340px;
+}
+
+.btn-booking-zoho {
+  display: inline-block;
+  text-decoration: none;
+  font-size: 0.82rem;
+  padding: 0.9rem 2.2rem;
 }
 
 /* ---- Calendar Widget ---- */
