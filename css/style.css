@@ -698,16 +698,15 @@ img { max-width: 100%; display: block; }
   /* Remplacez ces backgrounds par vos photos : background-image: url('images/photo1.jpg'); */
 }
 
-.gi-1 { background: linear-gradient(135deg, #f2c4ce, #fce8ed); }
-.gi-2 { background: linear-gradient(135deg, #e8d5b0, #faf6f0); }
-.gi-3 { background: linear-gradient(135deg, #f2c4ce, #e8d5b0); }
-.gi-4 { background: linear-gradient(135deg, #faf6f0, #e8d5b0); }
-.gi-5 { background: linear-gradient(135deg, #e8a0b0, #f2c4ce); }
-.gi-6 { background: linear-gradient(135deg, #e8a0b0, #e8d5b0); }
-
-/* Pour ajouter vos photos, remplacez par :
-.gi-1 { background-image: url('images/nail1.jpg'); background-size: cover; background-position: center; }
-*/
+.gi-1 { background: linear-gradient(135deg, #f2c4ce, #fce8ed) url('https://images.unsplash.com/photo-1604654894610-df63bc536371?auto=format&fit=crop&w=400&h=500&q=80') center/cover; }
+.gi-2 { background: linear-gradient(135deg, #e8d5b0, #faf6f0) url('https://images.unsplash.com/photo-1604655852743-42c0b5b5b7a0?auto=format&fit=crop&w=400&h=500&q=80') center/cover; }
+.gi-3 { background: linear-gradient(135deg, #f2c4ce, #e8d5b0) url('https://images.unsplash.com/photo-1604654894610-df63bc536371?auto=format&fit=crop&w=400&h=500&q=80&sat=-20') center/cover; }
+.gi-4 { background: linear-gradient(135deg, #faf6f0, #e8d5b0) url('https://images.unsplash.com/photo-1519671845630-42893c0b56c1?auto=format&fit=crop&w=400&h=500&q=80') center/cover; }
+.gi-5 { background: linear-gradient(135deg, #e8a0b0, #f2c4ce) url('https://images.unsplash.com/photo-1583086921376-adac0c46ae34?auto=format&fit=crop&w=400&h=500&q=80') center/cover; }
+.gi-6 { background: linear-gradient(135deg, #e8a0b0, #e8d5b0) url('https://images.unsplash.com/photo-1632345031435-8727f592d8eb?auto=format&fit=crop&w=400&h=500&q=80') center/cover; }
+.gi-7 { background: linear-gradient(135deg, #7b3553, #c46e8a) url('https://images.unsplash.com/photo-1604655852743-42c0b5b5b7a0?auto=format&fit=crop&w=400&h=500&q=80&hue=30') center/cover; }
+.gi-8 { background: linear-gradient(135deg, #f5efe6, #e8d5b0) url('https://images.unsplash.com/photo-1519671845630-42893c0b56c1?auto=format&fit=crop&w=400&h=500&q=80&sat=10') center/cover; }
+.gi-9 { background: linear-gradient(135deg, #c8e6f5, #f2c4ce) url('https://images.unsplash.com/photo-1604654894610-df63bc536371?auto=format&fit=crop&w=400&h=500&q=80&hue=60') center/cover; }
 
 .gallery-overlay {
   position: absolute;
@@ -730,6 +729,65 @@ img { max-width: 100%; display: block; }
 
 .gallery-item:hover .gallery-overlay { background: rgba(58, 46, 46, 0.4); }
 .gallery-item:hover .gallery-overlay span { opacity: 1; }
+
+/* ---- WhatsApp Button ---- */
+.btn-whatsapp {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-top: 1.5rem;
+  background: #25D366;
+  color: var(--white);
+  text-decoration: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 3px;
+  font-size: 0.82rem;
+  font-family: 'Jost', sans-serif;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  transition: all var(--transition);
+  font-weight: 500;
+}
+
+.btn-whatsapp svg {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+}
+
+.btn-whatsapp:hover {
+  background: #1ebe5d;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(37, 211, 102, 0.35);
+}
+
+/* ---- Hours home row ---- */
+.hours-home span:first-child { color: #25D366; }
+.hours-home span:last-child  { color: #25D366 !important; }
+
+/* ---- Home visit service card ---- */
+.service-card--home::before {
+  background: linear-gradient(90deg, #25D366, var(--gold));
+}
+
+/* ---- Form checkbox ---- */
+.form-field--check { margin-bottom: 4px; }
+
+.check-label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.82rem;
+  color: var(--text-mid);
+  cursor: pointer;
+}
+
+.check-label input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  accent-color: var(--gold);
+  cursor: pointer;
+}
 
 /* ============================================
    TESTIMONIALS

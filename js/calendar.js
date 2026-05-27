@@ -7,10 +7,14 @@ const MONTHS = [
   'Juillet','Août','Septembre','Octobre','Novembre','Décembre'
 ];
 
-const ALL_SLOTS = [
+const SAT_SLOTS = [
+  '09:00','09:30','10:00','10:30','11:00','11:30',
+  '14:00','14:30','15:00','15:30','16:00','16:30','17:00','17:30'
+];
+
+const SUN_SLOTS = [
   '10:00','10:30','11:00','11:30',
-  '14:00','14:30','15:00','15:30',
-  '16:00','16:30','17:00','17:30','18:00'
+  '14:00','14:30','15:00','15:30'
 ];
 
 /* Créneaux déjà réservés — format clé : "YYYY-M-D"
@@ -53,11 +57,12 @@ function renderCalendar() {
   /* Jours du mois */
   for (let d = 1; d <= daysInMonth; d++) {
     const el  = document.createElement('div');
-    const dt  = new Date(year, month, d);
-    const isSunday = dt.getDay() === 0;
-    const isPast   = dt < new Date(today.getFullYear(), today.getMonth(), today.getDate());
+    const dt       = new Date(year, month, d);
+    const dayOfWeek = dt.getDay(); // 0=Dim, 6=Sam
+    const isWeekend = dayOfWeek === 0 || dayOfWeek === 6;
+    const isPast    = dt < new Date(today.getFullYear(), today.getMonth(), today.getDate());
 
-    if (isPast || isSunday) {
+    if (isPast || !isWeekend) {
       el.className = 'cal-day past';
     } else {
       el.className = 'cal-day available';
@@ -90,8 +95,10 @@ function selectDay(d) {
 
   const year  = currentDate.getFullYear();
   const month = currentDate.getMonth();
-  const key   = year + '-' + (month + 1) + '-' + d;
-  const booked = BOOKED[key] || [];
+  const key      = year + '-' + (month + 1) + '-' + d;
+  const booked   = BOOKED[key] || [];
+  const dayOfWeek = new Date(year, month, d).getDay();
+  const slots    = dayOfWeek === 6 ? SAT_SLOTS : SUN_SLOTS;
 
   /* Label */
   document.getElementById('slotDateLabel').textContent =
@@ -101,7 +108,7 @@ function selectDay(d) {
   const slotsGrid = document.getElementById('slotsGrid');
   slotsGrid.innerHTML = '';
 
-  ALL_SLOTS.forEach(time => {
+  slots.forEach(time => {
     const slot = document.createElement('div');
     slot.textContent = time;
 
@@ -173,17 +180,31 @@ document.getElementById('bookBtn').addEventListener('click', () => {
   const year  = currentDate.getFullYear();
   const month = currentDate.getMonth();
 
+  const homeVisit = document.getElementById('homeVisit').checked;
+  const lieu      = homeVisit ? 'Domicile (+20€)' : 'Salon';
+
+  const message = encodeURIComponent(
+    'Bonjour L&S Signature !\n\n' +
+    'Je souhaite prendre rendez-vous :\n' +
+    '👤 ' + fname + ' ' + lname + '\n' +
+    '📅 ' + selectedDay + ' ' + MONTHS[month] + ' ' + year + '\n' +
+    '🕐 ' + selectedSlot + '\n' +
+    '💅 ' + service + '\n' +
+    '📍 Lieu : ' + lieu + '\n' +
+    '📧 ' + email + '\n\n' +
+    'Merci !'
+  );
+
+  window.open('https://wa.me/33600000000?text=' + message, '_blank');
+
+  document.getElementById('modal').classList.add('active');
   document.getElementById('modalDetail').innerHTML =
     '<strong>👤 Client·e :</strong> ' + fname + ' ' + lname + '<br>' +
     '<strong>📅 Date :</strong> ' + selectedDay + ' ' + MONTHS[month] + ' ' + year + '<br>' +
     '<strong>🕐 Heure :</strong> ' + selectedSlot + '<br>' +
     '<strong>💅 Prestation :</strong> ' + service + '<br>' +
+    '<strong>📍 Lieu :</strong> ' + lieu + '<br>' +
     '<strong>📧 E-mail :</strong> ' + email;
-
-  document.getElementById('modal').classList.add('active');
-
-  /* Ici : envoyer les données à votre backend / Formspree / EmailJS */
-  /* sendBooking({ fname, lname, email, service, date: selectedDay, month, year, slot: selectedSlot }); */
 });
 
 /* ---- Init ---- */
