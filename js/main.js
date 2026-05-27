@@ -23,10 +23,10 @@ function closeMobile() {
 }
 
 /* ---- Scroll doux vers une section ---- */
-function scrollTo(id) {
+function scrollToSection(id) {
   const el = document.getElementById(id);
   if (el) {
-    const offset = 80; /* hauteur de la navbar */
+    const offset = 80;
     const top = el.getBoundingClientRect().top + window.scrollY - offset;
     window.scrollTo({ top, behavior: 'smooth' });
   }
