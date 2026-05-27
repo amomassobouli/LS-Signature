@@ -921,6 +921,20 @@ footer {
 
 .footer-links a:hover { color: var(--gold); }
 
+.footer-email {
+  margin-bottom: 1.5rem;
+}
+
+.footer-email a {
+  font-size: 0.82rem;
+  color: var(--gold);
+  text-decoration: none;
+  letter-spacing: 0.08em;
+  transition: color var(--transition);
+}
+
+.footer-email a:hover { color: var(--gold-light); }
+
 .footer-bottom {
   font-size: 0.72rem;
   color: var(--text-light);
