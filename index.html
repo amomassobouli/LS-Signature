@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>L&S Signature – Nail Art & Manicure</title>
+  <meta name="description" content="L&S Signature – Institut de manucure et nail art à Paris. Réservez votre rendez-vous en ligne.">
+  <link rel="stylesheet" href="css/style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <!-- ===== NAVIGATION ===== -->
+  <nav id="navbar">
+    <div class="nav-logo">L<span>&</span>S Signature</div>
+    <ul class="nav-links">
+      <li><a href="#services">Services</a></li>
+      <li><a href="#booking">Réservation</a></li>
+      <li><a href="#galerie">Galerie</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    <button class="nav-cta" onclick="scrollTo('booking')">Prendre RDV</button>
+    <button class="nav-burger" id="burger" aria-label="Menu">&#9776;</button>
+  </nav>
+
+  <!-- Mobile Menu -->
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="#services" onclick="closeMobile()">Services</a>
+    <a href="#booking" onclick="closeMobile()">Réservation</a>
+    <a href="#galerie" onclick="closeMobile()">Galerie</a>
+    <a href="#contact" onclick="closeMobile()">Contact</a>
+  </div>
+
+  <!-- ===== HERO ===== -->
+  <section class="hero">
+    <div class="hero-content">
+      <div class="hero-badge">✦ Nail Art & Soin des Mains ✦</div>
+      <h1>L&amp;S<br><em>Signature</em></h1>
+      <p class="hero-sub">L'art de la manucure raffinée. Des mains soignées, une élégance intemporelle.</p>
+      <div class="hero-btns">
+        <button class="btn-primary" onclick="scrollTo('booking')">Réserver maintenant</button>
+        <button class="btn-outline" onclick="scrollTo('services')">Nos prestations</button>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider">✦ &nbsp; ✦ &nbsp; ✦</div>
+
+  <!-- ===== SERVICES ===== -->
+  <section id="services" class="section">
+    <div class="section-inner">
+      <div class="section-header">
+        <span class="section-tag">Nos prestations</span>
+        <h2 class="section-title">Des soins <em>d'exception</em></h2>
+      </div>
+      <div class="services-grid">
+        <div class="service-card">
+          <div class="service-icon">💅</div>
+          <div class="service-name">Manucure Classique</div>
+          <p class="service-desc">Soin complet des ongles, limage, cuticules, massage des mains et vernis couleur au choix.</p>
+          <div class="service-price">À partir de 35 €</div>
+        </div>
+        <div class="service-card">
+          <div class="service-icon">✨</div>
+          <div class="service-name">Pose Semi-Permanent</div>
+          <p class="service-desc">Vernis semi-permanent longue durée jusqu'à 3 semaines. Large palette de couleurs tendance.</p>
+          <div class="service-price">À partir de 45 €</div>
+        </div>
+        <div class="service-card">
+          <div class="service-icon">💎</div>
+          <div class="service-name">Nail Art Signature</div>
+          <p class="service-desc">Créations personnalisées : dégradé, chrome, nail art floraux, French artistique et décors sur mesure.</p>
+          <div class="service-price">À partir de 60 €</div>
+        </div>
+        <div class="service-card">
+          <div class="service-icon">🌸</div>
+          <div class="service-name">Pose Gel & Extensions</div>
+          <p class="service-desc">Allongement et renforcement des ongles en gel UV. Résultat naturel et durable.</p>
+          <div class="service-price">À partir de 70 €</div>
+        </div>
+        <div class="service-card">
+          <div class="service-icon">🫶</div>
+          <div class="service-name">Soin Luxe Mains</div>
+          <p class="service-desc">Gommage, bain de paraffine, masque nourrissant et massage relaxant.</p>
+          <div class="service-price">À partir de 55 €</div>
+        </div>
+        <div class="service-card">
+          <div class="service-icon">🎀</div>
+          <div class="service-name">Forfait Mariée</div>
+          <p class="service-desc">Manucure soins + pose gel ou semi + nail art personnalisé pour votre grand jour.</p>
+          <div class="service-price">Sur devis</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== BOOKING ===== -->
+  <section id="booking" class="booking-section">
+    <div class="booking-inner">
+      <div class="section-header" style="text-align:center; margin-bottom:2.5rem;">
+        <span class="section-tag">Agenda en ligne</span>
+        <h2 class="section-title">Prendre <em>rendez-vous</em></h2>
+      </div>
+      <div class="booking-grid">
+
+        <!-- Info -->
+        <div class="booking-info">
+          <h2>Réservez votre <em>moment</em></h2>
+          <p>Choisissez votre créneau directement en ligne. Confirmation par e-mail dans les plus brefs délais.</p>
+          <ul class="hours-list">
+            <li><span>Lundi – Vendredi</span><span>10h – 19h</span></li>
+            <li><span>Samedi</span><span>09h – 18h</span></li>
+            <li><span>Dimanche</span><span>Sur rendez-vous</span></li>
+            <li><span>📍 Adresse</span><span>Paris, France</span></li>
+            <li><span>📞 Téléphone</span><span>+33 6 00 00 00 00</span></li>
+          </ul>
+        </div>
+
+        <!-- Calendar Widget -->
+        <div class="calendar-widget">
+          <div class="cal-header">
+            <button class="cal-nav" id="prevMonth">&#8249;</button>
+            <h3 id="calTitle">Juin 2025</h3>
+            <button class="cal-nav" id="nextMonth">&#8250;</button>
+          </div>
+          <div class="cal-body">
+            <div class="cal-days-header">
+              <span>Lun</span><span>Mar</span><span>Mer</span>
+              <span>Jeu</span><span>Ven</span><span>Sam</span><span>Dim</span>
+            </div>
+            <div class="cal-grid" id="calGrid"></div>
+          </div>
+          <div class="time-slots" id="timeSlotsSection" style="display:none;">
+            <h4 id="slotDateLabel">Créneaux disponibles</h4>
+            <div class="slots-grid" id="slotsGrid"></div>
+          </div>
+          <div class="booking-form" id="bookingForm" style="display:none;">
+            <h4>Vos informations</h4>
+            <div class="form-row">
+              <div class="form-field">
+                <label for="fname">Prénom</label>
+                <input type="text" id="fname" placeholder="Sophie">
+              </div>
+              <div class="form-field">
+                <label for="lname">Nom</label>
+                <input type="text" id="lname" placeholder="Martin">
+              </div>
+            </div>
+            <div class="form-field">
+              <label for="email">E-mail</label>
+              <input type="email" id="email" placeholder="sophie@email.com">
+            </div>
+            <div class="form-field">
+              <label for="service">Prestation</label>
+              <select id="service">
+                <option value="">Choisir une prestation...</option>
+                <option>Manucure Classique – 35€</option>
+                <option>Pose Semi-Permanent – 45€</option>
+                <option>Nail Art Signature – 60€</option>
+                <option>Pose Gel & Extensions – 70€</option>
+                <option>Soin Luxe Mains – 55€</option>
+                <option>Forfait Mariée – Sur devis</option>
+              </select>
+            </div>
+            <button class="btn-book" id="bookBtn">Confirmer le rendez-vous ✦</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== GALLERY ===== -->
+  <section id="galerie" class="gallery-section">
+    <div class="gallery-inner">
+      <div class="section-header" style="text-align:center;">
+        <span class="section-tag">Nos réalisations</span>
+        <h2 class="section-title">Galerie <em>Signature</em></h2>
+      </div>
+      <div class="gallery-grid">
+        <div class="gallery-item gi-1"><div class="gallery-overlay"><span>Nail Art Floral</span></div></div>
+        <div class="gallery-item gi-2"><div class="gallery-overlay"><span>French Dorée</span></div></div>
+        <div class="gallery-item gi-3"><div class="gallery-overlay"><span>Dégradé Rose Gold</span></div></div>
+        <div class="gallery-item gi-4"><div class="gallery-overlay"><span>Chrome Miroir</span></div></div>
+        <div class="gallery-item gi-5"><div class="gallery-overlay"><span>Nail Art Bijoux</span></div></div>
+        <div class="gallery-item gi-6"><div class="gallery-overlay"><span>Art Minimaliste</span></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== TESTIMONIALS ===== -->
+  <section class="testimonials">
+    <div class="section-inner">
+      <div class="section-header" style="text-align:center;">
+        <span class="section-tag">Avis clients</span>
+        <h2 class="section-title">Ce qu'elles <em>disent</em></h2>
+      </div>
+      <div class="testi-grid">
+        <div class="testi-card">
+          <div class="stars">★★★★★</div>
+          <p class="testi-text">"Un travail absolument magnifique. Mon nail art floral a fait l'unanimité lors de mon mariage. Je ne vais plus nulle part ailleurs !"</p>
+          <div class="testi-author">— Camille D.</div>
+        </div>
+        <div class="testi-card">
+          <div class="stars">★★★★★</div>
+          <p class="testi-text">"L'accueil est chaleureux, le cadre est sublime et la qualité irréprochable. Mon semi-permanent tient depuis 3 semaines sans écailler !"</p>
+          <div class="testi-author">— Inès M.</div>
+        </div>
+        <div class="testi-card">
+          <div class="stars">★★★★★</div>
+          <p class="testi-text">"Le soin luxe mains est un vrai moment de détente. Je repars à chaque fois avec de belles mains et le sourire. Merci L&amp;S !"</p>
+          <div class="testi-author">— Léa T.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== FOOTER ===== -->
+  <footer id="contact">
+    <div class="footer-logo">L&amp;S Signature</div>
+    <div class="footer-tagline">✦ Nail Art & Soin des Mains – Paris ✦</div>
+    <ul class="footer-links">
+      <li><a href="#">Instagram</a></li>
+      <li><a href="#">Facebook</a></li>
+      <li><a href="#">Mentions légales</a></li>
+      <li><a href="#">Contact</a></li>
+    </ul>
+    <div class="footer-bottom">© 2025 L&amp;S Signature — Tous droits réservés</div>
+  </footer>
+
+  <!-- ===== MODAL CONFIRMATION ===== -->
+  <div class="modal-overlay" id="modal">
+    <div class="modal">
+      <div class="modal-icon">🌸</div>
+      <h3>Rendez-vous confirmé !</h3>
+      <p>Merci pour votre réservation. Nous vous enverrons une confirmation par e-mail.</p>
+      <div class="modal-detail" id="modalDetail"></div>
+      <button class="modal-close" onclick="closeModal()">Parfait, merci !</button>
+    </div>
+  </div>
+
+  <script src="js/calendar.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>

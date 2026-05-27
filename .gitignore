@@ -1,0 +1,22 @@
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# VS Code
+.vscode/
+*.code-workspace
+
+# Node (si utilisé plus tard)
+node_modules/
+npm-debug.log
+
+# Fichiers temporaires
+*.tmp
+*.bak
+*.swp
