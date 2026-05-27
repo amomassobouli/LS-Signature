@@ -126,60 +126,16 @@
           </a>
         </div>
 
-        <!-- Calendar Widget -->
-        <div class="calendar-widget">
-          <div class="cal-header">
-            <button class="cal-nav" id="prevMonth">&#8249;</button>
-            <h3 id="calTitle">Juin 2025</h3>
-            <button class="cal-nav" id="nextMonth">&#8250;</button>
-          </div>
-          <div class="cal-body">
-            <div class="cal-days-header">
-              <span>Lun</span><span>Mar</span><span>Mer</span>
-              <span>Jeu</span><span>Ven</span><span>Sam</span><span>Dim</span>
-            </div>
-            <div class="cal-grid" id="calGrid"></div>
-          </div>
-          <div class="time-slots" id="timeSlotsSection" style="display:none;">
-            <h4 id="slotDateLabel">Créneaux disponibles</h4>
-            <div class="slots-grid" id="slotsGrid"></div>
-          </div>
-          <div class="booking-form" id="bookingForm" style="display:none;">
-            <h4>Vos informations</h4>
-            <div class="form-row">
-              <div class="form-field">
-                <label for="fname">Prénom</label>
-                <input type="text" id="fname" placeholder="Sophie">
-              </div>
-              <div class="form-field">
-                <label for="lname">Nom</label>
-                <input type="text" id="lname" placeholder="Martin">
-              </div>
-            </div>
-            <div class="form-field">
-              <label for="email">E-mail</label>
-              <input type="email" id="email" placeholder="sophie@email.com">
-            </div>
-            <div class="form-field">
-              <label for="service">Prestation</label>
-              <select id="service">
-                <option value="">Choisir une prestation...</option>
-                <option>Manucure Classique – 35€</option>
-                <option>Pose Semi-Permanent – 45€</option>
-                <option>Nail Art Signature – 60€</option>
-                <option>Pose Gel & Extensions – 70€</option>
-                <option>Soin Luxe Mains – 55€</option>
-                <option>Forfait Mariée – Sur devis</option>
-              </select>
-            </div>
-            <div class="form-field form-field--check">
-              <label class="check-label">
-                <input type="checkbox" id="homeVisit">
-                <span>🚗 Déplacement à domicile (+20€)</span>
-              </label>
-            </div>
-            <button class="btn-book" id="bookBtn">Réserver via WhatsApp ✦</button>
-          </div>
+        <!-- Zoho Bookings Widget -->
+        <div class="zoho-booking-wrap">
+          <iframe
+            src="https://lssignature.zohobookings.eu/#/263452000000039045"
+            width="100%"
+            height="620"
+            frameborder="0"
+            allow="payment"
+            title="Réservation L&S Signature"
+          ></iframe>
         </div>
 
       </div>
@@ -258,7 +214,6 @@
     </div>
   </div>
 
-  <script src="js/calendar.js"></script>
   <script src="js/main.js"></script>
 </body>
 </html>

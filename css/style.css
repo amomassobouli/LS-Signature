@@ -441,6 +441,20 @@ img { max-width: 100%; display: block; }
   font-weight: 500;
 }
 
+/* ---- Zoho Booking iframe ---- */
+.zoho-booking-wrap {
+  background: var(--white);
+  border-radius: 6px;
+  border: 1px solid var(--rose-light);
+  overflow: hidden;
+  box-shadow: 0 4px 24px var(--shadow);
+}
+
+.zoho-booking-wrap iframe {
+  display: block;
+  min-height: 580px;
+}
+
 /* ---- Calendar Widget ---- */
 .calendar-widget {
   background: var(--white);
