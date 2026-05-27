@@ -42,6 +42,23 @@ function closeModal() {
   document.getElementById('service').value = '';
 }
 
+/* ---- Lightbox galerie ---- */
+function openLightbox(src, caption) {
+  document.getElementById('lightboxImg').src       = src;
+  document.getElementById('lightboxCaption').textContent = caption;
+  document.getElementById('lightbox').classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeLightbox() {
+  document.getElementById('lightbox').classList.remove('active');
+  document.body.style.overflow = '';
+}
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closeLightbox();
+});
+
 /* Fermer la modal en cliquant sur l'overlay */
 document.getElementById('modal').addEventListener('click', function(e) {
   if (e.target === this) closeModal();

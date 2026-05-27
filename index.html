@@ -154,15 +154,15 @@
         <h2 class="section-title">Galerie <em>Signature</em></h2>
       </div>
       <div class="gallery-grid">
-        <div class="gallery-item gi-1"><div class="gallery-overlay"><span>Nail Art Floral</span></div></div>
-        <div class="gallery-item gi-2"><div class="gallery-overlay"><span>French Dorée</span></div></div>
-        <div class="gallery-item gi-3"><div class="gallery-overlay"><span>Dégradé Rose Gold</span></div></div>
-        <div class="gallery-item gi-4"><div class="gallery-overlay"><span>Chrome Miroir</span></div></div>
-        <div class="gallery-item gi-5"><div class="gallery-overlay"><span>Nail Art Bijoux</span></div></div>
-        <div class="gallery-item gi-6"><div class="gallery-overlay"><span>Art Minimaliste</span></div></div>
-        <div class="gallery-item gi-7"><div class="gallery-overlay"><span>Stiletto Bordeaux</span></div></div>
-        <div class="gallery-item gi-8"><div class="gallery-overlay"><span>Nude & Strass</span></div></div>
-        <div class="gallery-item gi-9"><div class="gallery-overlay"><span>Aquarelle Pastel</span></div></div>
+        <div class="gallery-item gi-1" onclick="openLightbox('https://images.pexels.com/photos/1319460/pexels-photo-1319460.jpeg?auto=compress&cs=tinysrgb&w=800','Nail Art Floral')"><div class="gallery-overlay"><span>Nail Art Floral</span></div></div>
+        <div class="gallery-item gi-2" onclick="openLightbox('https://images.pexels.com/photos/3997379/pexels-photo-3997379.jpeg?auto=compress&cs=tinysrgb&w=800','French Dorée')"><div class="gallery-overlay"><span>French Dorée</span></div></div>
+        <div class="gallery-item gi-3" onclick="openLightbox('https://images.pexels.com/photos/1762851/pexels-photo-1762851.jpeg?auto=compress&cs=tinysrgb&w=800','Dégradé Rose Gold')"><div class="gallery-overlay"><span>Dégradé Rose Gold</span></div></div>
+        <div class="gallery-item gi-4" onclick="openLightbox('images/Gemini_Generated_Image_f8f4adf8f4adf8f4.png','Chrome Miroir')"><div class="gallery-overlay"><span>Chrome Miroir</span></div></div>
+        <div class="gallery-item gi-5" onclick="openLightbox('https://images.pexels.com/photos/3997386/pexels-photo-3997386.jpeg?auto=compress&cs=tinysrgb&w=800','Nail Art Bijoux')"><div class="gallery-overlay"><span>Nail Art Bijoux</span></div></div>
+        <div class="gallery-item gi-6" onclick="openLightbox('https://images.pexels.com/photos/4046316/pexels-photo-4046316.jpeg?auto=compress&cs=tinysrgb&w=800','Art Minimaliste')"><div class="gallery-overlay"><span>Art Minimaliste</span></div></div>
+        <div class="gallery-item gi-7" onclick="openLightbox('https://images.pexels.com/photos/3997384/pexels-photo-3997384.jpeg?auto=compress&cs=tinysrgb&w=800','Stiletto Bordeaux')"><div class="gallery-overlay"><span>Stiletto Bordeaux</span></div></div>
+        <div class="gallery-item gi-8" onclick="openLightbox('https://images.pexels.com/photos/1729931/pexels-photo-1729931.jpeg?auto=compress&cs=tinysrgb&w=800','Nude & Strass')"><div class="gallery-overlay"><span>Nude & Strass</span></div></div>
+        <div class="gallery-item gi-9" onclick="openLightbox('https://images.pexels.com/photos/3997382/pexels-photo-3997382.jpeg?auto=compress&cs=tinysrgb&w=800','Aquarelle Pastel')"><div class="gallery-overlay"><span>Aquarelle Pastel</span></div></div>
       </div>
     </div>
   </section>
@@ -209,6 +209,13 @@
     </div>
     <div class="footer-bottom">© 2025 L&amp;S Signature — Tous droits réservés</div>
   </footer>
+
+  <!-- ===== LIGHTBOX GALERIE ===== -->
+  <div class="lightbox-overlay" id="lightbox" onclick="closeLightbox()">
+    <button class="lightbox-close" onclick="closeLightbox()">✕</button>
+    <img id="lightboxImg" src="" alt="">
+    <div class="lightbox-caption" id="lightboxCaption"></div>
+  </div>
 
   <!-- ===== MODAL CONFIRMATION ===== -->
   <div class="modal-overlay" id="modal">
