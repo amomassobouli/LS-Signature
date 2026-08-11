@@ -10,6 +10,7 @@ let saveConfigBtn;
 let saveSupabaseBtn;
 let loadSupabaseBtn;
 let resetConfigBtn;
+let restoreDefaultsBtn;
 let logoutBtn;
 let supabaseUrlInput;
 let supabaseKeyInput;
@@ -33,6 +34,7 @@ function initAdminElements() {
   loadSupabaseBtn = document.getElementById('loadSupabaseBtn');
   resetConfigBtn = document.getElementById('resetConfigBtn');
   logoutBtn = document.getElementById('logoutBtn');
+  restoreDefaultsBtn = document.getElementById('restoreDefaultsBtn');
   supabaseUrlInput = document.getElementById('supabaseUrl');
   supabaseKeyInput = document.getElementById('supabaseKey');
   supabaseStatus = document.getElementById('supabaseStatus');
@@ -197,14 +199,22 @@ function resetConfig() {
   setStatus('Configuration réinitialisée à la version par défaut.', 'success');
 }
 
-adminLoginBtn.addEventListener('click', loginAdmin);
-saveConfigBtn.addEventListener('click', saveConfig);
-saveSupabaseBtn.addEventListener('click', saveConfigSupabase);
-loadSupabaseBtn.addEventListener('click', loadConfigSupabase);
-resetConfigBtn.addEventListener('click', resetConfig);
-logoutBtn.addEventListener('click', logoutAdmin);
+function restoreDefaults() {
+  adminJson.value = JSON.stringify(window.APP_DATA, null, 2);
+  setStatus('Contenu par défaut restauré. Enregistrez pour appliquer.', 'success');
+}
 
-window.addEventListener('load', () => {
+window.addEventListener('DOMContentLoaded', () => {
+  initAdminElements();
+
+  adminLoginBtn.addEventListener('click', loginAdmin);
+  saveConfigBtn.addEventListener('click', saveConfig);
+  saveSupabaseBtn.addEventListener('click', saveConfigSupabase);
+  loadSupabaseBtn.addEventListener('click', loadConfigSupabase);
+  resetConfigBtn.addEventListener('click', resetConfig);
+  restoreDefaultsBtn.addEventListener('click', restoreDefaults);
+  logoutBtn.addEventListener('click', logoutAdmin);
+
   const auth = localStorage.getItem(AUTH_KEY) === 'true';
   if (auth) {
     adminLoginBox.style.display = 'none';

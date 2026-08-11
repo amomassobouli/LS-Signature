@@ -1,5 +1,20 @@
 const STORAGE_KEY = 'lsSignatureAdminData';
 
+function normalizeAppData(data) {
+  const defaults = window.APP_DATA;
+  if (!data || typeof data !== 'object') return defaults;
+
+  return {
+    site: { ...defaults.site, ...(data.site || {}) },
+    services: Array.isArray(data.services) && data.services.length ? data.services : defaults.services,
+    gallery: Array.isArray(data.gallery) && data.gallery.length ? data.gallery : defaults.gallery,
+    testimonials: Array.isArray(data.testimonials) && data.testimonials.length ? data.testimonials : defaults.testimonials,
+    bookingInfo: { ...defaults.bookingInfo, ...(data.bookingInfo || {}) },
+    calendar: { ...defaults.calendar, ...(data.calendar || {}) },
+    admin: { ...defaults.admin, ...(data.admin || {}) }
+  };
+}
+
 async function loadAppData() {
   const stored = localStorage.getItem(STORAGE_KEY);
 
@@ -7,7 +22,7 @@ async function loadAppData() {
     try {
       const supaData = await supabaseFetchSiteConfig();
       if (supaData && typeof supaData === 'object') {
-        return supaData;
+        return normalizeAppData(supaData);
       }
     } catch (err) {
       console.warn('Erreur lors du chargement Supabase :', err);
@@ -16,13 +31,13 @@ async function loadAppData() {
 
   if (stored) {
     try {
-      return JSON.parse(stored);
+      return normalizeAppData(JSON.parse(stored));
     } catch (err) {
       console.warn('Impossible de charger la configuration admin depuis localStorage.', err);
     }
   }
 
-  return window.APP_DATA;
+  return normalizeAppData(window.APP_DATA);
 }
 
 function buildWhatsappUrl(number, text) {
