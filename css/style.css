@@ -979,25 +979,67 @@ footer {
   margin-bottom: 0.5rem;
 }
 
-.modal p {
-  font-size: 0.85rem;
+/* ============================================
+   ADMIN
+   ============================================ */
+.admin-section { padding-top: 8rem; padding-bottom: 5rem; }
+
+.admin-card {
+  background: var(--white);
+  border: 1px solid var(--rose-light);
+  border-radius: 8px;
+  padding: 2rem;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+  max-width: 940px;
+  margin: 0 auto 2rem;
+}
+
+.admin-login p,
+.admin-panel p {
   color: var(--text-mid);
-  line-height: 1.8;
   margin-bottom: 1.5rem;
 }
 
-.modal-detail {
-  background: var(--ivory-warm);
-  border-radius: 4px;
+.admin-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.admin-json {
+  width: 100%;
+  min-height: 420px;
+  border: 1px solid var(--rose-light);
+  border-radius: 6px;
   padding: 1rem;
-  margin-bottom: 1.5rem;
-  font-size: 0.82rem;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  background: #fcfaf8;
   color: var(--text-dark);
-  text-align: left;
-  line-height: 2;
+  resize: vertical;
 }
 
-.modal-close {
+.admin-message {
+  margin-top: 1rem;
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.admin-login .form-field,
+.admin-panel .form-field {
+  margin-bottom: 1rem;
+}
+
+.admin-login input,
+.admin-panel textarea {
+  width: 100%;
+}
+
+@media (max-width: 800px) {
+  .admin-toolbar { flex-direction: column; }
+}
   background: var(--gold);
   color: var(--white);
   border: none;

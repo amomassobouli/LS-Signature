@@ -18,6 +18,7 @@
       <li><a href="#booking">Réservation</a></li>
       <li><a href="#galerie">Galerie</a></li>
       <li><a href="#contact">Contact</a></li>
+      <li><a href="admin.html">Admin</a></li>
     </ul>
     <button class="nav-cta" onclick="scrollToSection('booking')">Prendre RDV</button>
     <button class="nav-burger" id="burger" aria-label="Menu">&#9776;</button>
@@ -34,12 +35,12 @@
   <!-- ===== HERO ===== -->
   <section class="hero">
     <div class="hero-content">
-      <div class="hero-badge">✦ Nail Art & Soin des Mains ✦</div>
-      <h1>L&amp;S<br><em>Signature</em></h1>
-      <p class="hero-sub">L'art de la manucure raffinée. Des mains soignées, une élégance intemporelle.</p>
+      <div id="heroBadge" class="hero-badge">✦ Nail Art & Soin des Mains ✦</div>
+      <h1 id="heroTitle">L&amp;S<br><em>Signature</em></h1>
+      <p id="heroSubtitle" class="hero-sub">L'art de la manucure raffinée. Des mains soignées, une élégance intemporelle.</p>
       <div class="hero-btns">
-        <button class="btn-primary" onclick="scrollToSection('booking')">Réserver maintenant</button>
-        <button class="btn-outline" onclick="scrollToSection('services')">Nos prestations</button>
+        <button id="heroPrimaryBtn" class="btn-primary" onclick="scrollToSection('booking')">Réserver maintenant</button>
+        <button id="heroSecondaryBtn" class="btn-outline" onclick="scrollToSection('services')">Nos prestations</button>
       </div>
     </div>
   </section>
@@ -53,50 +54,7 @@
         <span class="section-tag">Nos prestations</span>
         <h2 class="section-title">Des soins <em>d'exception</em></h2>
       </div>
-      <div class="services-grid">
-        <div class="service-card">
-          <div class="service-icon">💅</div>
-          <div class="service-name">Manucure Classique</div>
-          <p class="service-desc">Soin complet des ongles, limage, cuticules, massage des mains et vernis couleur au choix.</p>
-          <div class="service-price">À partir de 35 €</div>
-        </div>
-        <div class="service-card">
-          <div class="service-icon">✨</div>
-          <div class="service-name">Pose Semi-Permanent</div>
-          <p class="service-desc">Vernis semi-permanent longue durée jusqu'à 3 semaines. Large palette de couleurs tendance.</p>
-          <div class="service-price">À partir de 45 €</div>
-        </div>
-        <div class="service-card">
-          <div class="service-icon">💎</div>
-          <div class="service-name">Nail Art Signature</div>
-          <p class="service-desc">Créations personnalisées : dégradé, chrome, nail art floraux, French artistique et décors sur mesure.</p>
-          <div class="service-price">À partir de 60 €</div>
-        </div>
-        <div class="service-card">
-          <div class="service-icon">🌸</div>
-          <div class="service-name">Pose Gel & Extensions</div>
-          <p class="service-desc">Allongement et renforcement des ongles en gel UV. Résultat naturel et durable.</p>
-          <div class="service-price">À partir de 70 €</div>
-        </div>
-        <div class="service-card">
-          <div class="service-icon">🫶</div>
-          <div class="service-name">Soin Luxe Mains</div>
-          <p class="service-desc">Gommage, bain de paraffine, masque nourrissant et massage relaxant.</p>
-          <div class="service-price">À partir de 55 €</div>
-        </div>
-        <div class="service-card">
-          <div class="service-icon">🎀</div>
-          <div class="service-name">Forfait Mariée</div>
-          <p class="service-desc">Manucure soins + pose gel ou semi + nail art personnalisé pour votre grand jour.</p>
-          <div class="service-price">Sur devis</div>
-        </div>
-        <div class="service-card service-card--home">
-          <div class="service-icon">🚗</div>
-          <div class="service-name">Déplacement Domicile</div>
-          <p class="service-desc">Je me déplace chez vous le week-end. Profitez de toutes nos prestations dans le confort de votre foyer.</p>
-          <div class="service-price">+ 20 € de déplacement</div>
-        </div>
-      </div>
+      <div class="services-grid"></div>
     </div>
   </section>
 
@@ -108,40 +66,63 @@
         <h2 class="section-title">Prendre <em>rendez-vous</em></h2>
       </div>
       <div class="booking-grid">
-
-        <!-- Info -->
         <div class="booking-info">
-          <h2>Réservez votre <em>moment</em></h2>
-          <p>Choisissez votre créneau directement en ligne. Confirmation par e-mail dans les plus brefs délais.</p>
-          <ul class="hours-list">
-            <li><span>Samedi</span><span>09h – 18h</span></li>
-            <li><span>Dimanche</span><span>10h – 16h</span></li>
-            <li class="hours-home"><span>🚗 Déplacement domicile</span><span>Disponible</span></li>
-            <li><span>📍 Adresse</span><span>Paris, France</span></li>
-            <li><span>📞 Téléphone</span><span>+33 6 00 00 00 00</span></li>
-          </ul>
-          <a class="btn-whatsapp" href="https://wa.me/33600000000?text=Bonjour%20L%26S%20Signature%20%21%20Je%20souhaite%20prendre%20un%20rendez-vous.%20Pouvez-vous%20me%20confirmer%20vos%20disponibilit%C3%A9s%20%3F" target="_blank" rel="noopener">
+          <h2 id="bookingTitle">Réservez votre <em>moment</em></h2>
+          <p id="bookingText">Choisissez votre créneau directement en ligne. Confirmation par e-mail dans les plus brefs délais.</p>
+          <ul id="bookingHours" class="hours-list"></ul>
+          <a id="whatsappButton" class="btn-whatsapp" href="#" target="_blank" rel="noopener">
             <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
             Réserver via WhatsApp
           </a>
+          <a id="zohoBookingLink" class="btn-primary btn-booking-zoho" href="#" target="_blank" rel="noopener">
+            Choisir un créneau ✦
+          </a>
         </div>
 
-        <!-- Zoho Bookings -->
-        <div class="zoho-booking-wrap">
-          <div class="booking-cta-box">
-            <div class="booking-cta-icon">📅</div>
-            <h3>Réservez votre créneau</h3>
-            <p>Choisissez votre prestation, votre jour et votre heure directement sur notre agenda en ligne.</p>
-            <a class="btn-primary btn-booking-zoho" href="https://lssignature.zohobookings.eu/#/263452000000039045" target="_blank" rel="noopener">
-              Choisir un créneau ✦
-            </a>
-            <a class="btn-whatsapp" href="https://wa.me/33600000000?text=Bonjour%20L%26S%20Signature%20%21%20Je%20souhaite%20prendre%20un%20rendez-vous.%20Pouvez-vous%20me%20confirmer%20vos%20disponibilit%C3%A9s%20%3F" target="_blank" rel="noopener">
-              <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-              Réserver via WhatsApp
-            </a>
+        <div class="calendar-widget">
+          <div class="cal-header">
+            <button id="prevMonth" class="cal-nav" type="button">‹</button>
+            <h3 id="calTitle">Juin 2025</h3>
+            <button id="nextMonth" class="cal-nav" type="button">›</button>
           </div>
+          <div class="cal-body">
+            <div class="cal-days-header">
+              <span>Lun</span><span>Mar</span><span>Mer</span><span>Jeu</span><span>Ven</span><span>Sam</span><span>Dim</span>
+            </div>
+            <div id="calGrid" class="cal-grid"></div>
+          </div>
+          <div id="timeSlotsSection" class="time-slots" style="display:none;">
+            <h4 id="slotDateLabel">Créneaux disponibles</h4>
+            <div id="slotsGrid" class="slots-grid"></div>
+          </div>
+          <form id="bookingForm" class="booking-form" style="display:none;" onsubmit="return false;">
+            <h4>Confirmer ma réservation</h4>
+            <div class="form-row">
+              <div class="form-field">
+                <label for="fname">Prénom</label>
+                <input id="fname" type="text" placeholder="Prénom">
+              </div>
+              <div class="form-field">
+                <label for="lname">Nom</label>
+                <input id="lname" type="text" placeholder="Nom">
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-field">
+                <label for="email">E-mail</label>
+                <input id="email" type="email" placeholder="email@exemple.com">
+              </div>
+              <div class="form-field">
+                <label for="service">Prestation</label>
+                <select id="service"></select>
+              </div>
+            </div>
+            <div class="form-field form-field--check">
+              <label class="check-label"><input id="homeVisit" type="checkbox"> Déplacement domicile (+20€)</label>
+            </div>
+            <button id="bookBtn" class="btn-book" type="button">Valider la réservation</button>
+          </form>
         </div>
-
       </div>
     </div>
   </section>
@@ -153,17 +134,7 @@
         <span class="section-tag">Nos réalisations</span>
         <h2 class="section-title">Galerie <em>Signature</em></h2>
       </div>
-      <div class="gallery-grid">
-        <div class="gallery-item gi-1" onclick="openLightbox('https://images.pexels.com/photos/1319460/pexels-photo-1319460.jpeg?auto=compress&cs=tinysrgb&w=800','Nail Art Floral')"><div class="gallery-overlay"><span>Nail Art Floral</span></div></div>
-        <div class="gallery-item gi-2" onclick="openLightbox('https://images.pexels.com/photos/3997379/pexels-photo-3997379.jpeg?auto=compress&cs=tinysrgb&w=800','French Dorée')"><div class="gallery-overlay"><span>French Dorée</span></div></div>
-        <div class="gallery-item gi-3" onclick="openLightbox('https://images.pexels.com/photos/1762851/pexels-photo-1762851.jpeg?auto=compress&cs=tinysrgb&w=800','Dégradé Rose Gold')"><div class="gallery-overlay"><span>Dégradé Rose Gold</span></div></div>
-        <div class="gallery-item gi-4" onclick="openLightbox('images/Gemini_Generated_Image_f8f4adf8f4adf8f4.png','Chrome Miroir')"><div class="gallery-overlay"><span>Chrome Miroir</span></div></div>
-        <div class="gallery-item gi-5" onclick="openLightbox('https://images.pexels.com/photos/3997386/pexels-photo-3997386.jpeg?auto=compress&cs=tinysrgb&w=800','Nail Art Bijoux')"><div class="gallery-overlay"><span>Nail Art Bijoux</span></div></div>
-        <div class="gallery-item gi-6" onclick="openLightbox('https://images.pexels.com/photos/4046316/pexels-photo-4046316.jpeg?auto=compress&cs=tinysrgb&w=800','Art Minimaliste')"><div class="gallery-overlay"><span>Art Minimaliste</span></div></div>
-        <div class="gallery-item gi-7" onclick="openLightbox('https://images.pexels.com/photos/3997384/pexels-photo-3997384.jpeg?auto=compress&cs=tinysrgb&w=800','Stiletto Bordeaux')"><div class="gallery-overlay"><span>Stiletto Bordeaux</span></div></div>
-        <div class="gallery-item gi-8" onclick="openLightbox('https://images.pexels.com/photos/1729931/pexels-photo-1729931.jpeg?auto=compress&cs=tinysrgb&w=800','Nude & Strass')"><div class="gallery-overlay"><span>Nude & Strass</span></div></div>
-        <div class="gallery-item gi-9" onclick="openLightbox('https://images.pexels.com/photos/3997382/pexels-photo-3997382.jpeg?auto=compress&cs=tinysrgb&w=800','Aquarelle Pastel')"><div class="gallery-overlay"><span>Aquarelle Pastel</span></div></div>
-      </div>
+      <div class="gallery-grid"></div>
     </div>
   </section>
 
@@ -174,23 +145,7 @@
         <span class="section-tag">Avis clients</span>
         <h2 class="section-title">Ce qu'elles <em>disent</em></h2>
       </div>
-      <div class="testi-grid">
-        <div class="testi-card">
-          <div class="stars">★★★★★</div>
-          <p class="testi-text">"Un travail absolument magnifique. Mon nail art floral a fait l'unanimité lors de mon mariage. Je ne vais plus nulle part ailleurs !"</p>
-          <div class="testi-author">— Camille D.</div>
-        </div>
-        <div class="testi-card">
-          <div class="stars">★★★★★</div>
-          <p class="testi-text">"L'accueil est chaleureux, le cadre est sublime et la qualité irréprochable. Mon semi-permanent tient depuis 3 semaines sans écailler !"</p>
-          <div class="testi-author">— Inès M.</div>
-        </div>
-        <div class="testi-card">
-          <div class="stars">★★★★★</div>
-          <p class="testi-text">"Le soin luxe mains est un vrai moment de détente. Je repars à chaque fois avec de belles mains et le sourire. Merci L&amp;S !"</p>
-          <div class="testi-author">— Léa T.</div>
-        </div>
-      </div>
+      <div class="testi-grid"></div>
     </div>
   </section>
 
@@ -229,5 +184,9 @@
   </div>
 
   <script src="js/main.js"></script>
+  <script src="js/content.js"></script>
+  <script src="js/supabase.js"></script>
+  <script src="js/site.js"></script>
+  <script src="js/calendar.js"></script>
 </body>
 </html>

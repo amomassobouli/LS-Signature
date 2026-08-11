@@ -19,12 +19,16 @@ const SUN_SLOTS = [
 
 /* Créneaux déjà réservés — format clé : "YYYY-M-D"
    À remplacer par une vraie API/base de données */
-const BOOKED = {
-  '2025-6-5':  ['10:00','11:00','14:00'],
-  '2025-6-12': ['14:30','15:00','16:00','17:00'],
-  '2025-6-19': ['10:30','11:30'],
-  '2025-6-26': ['10:00','14:00','15:30'],
-};
+function getBookedSlots() {
+  return (window.LSSiteData && window.LSSiteData.calendar && window.LSSiteData.calendar.bookedSlots)
+    ? window.LSSiteData.calendar.bookedSlots
+    : {
+      '2025-6-5':  ['10:00','11:00','14:00'],
+      '2025-6-12': ['14:30','15:00','16:00','17:00'],
+      '2025-6-19': ['10:30','11:30'],
+      '2025-6-26': ['10:00','14:00','15:30'],
+    };
+}
 
 let currentDate  = new Date();
 let selectedDay  = null;
@@ -96,7 +100,7 @@ function selectDay(d) {
   const year  = currentDate.getFullYear();
   const month = currentDate.getMonth();
   const key      = year + '-' + (month + 1) + '-' + d;
-  const booked   = BOOKED[key] || [];
+  const booked   = getBookedSlots()[key] || [];
   const dayOfWeek = new Date(year, month, d).getDay();
   const slots    = dayOfWeek === 6 ? SAT_SLOTS : SUN_SLOTS;
 

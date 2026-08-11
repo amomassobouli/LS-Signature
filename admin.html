@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin — L&S Signature</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <nav id="navbar">
+    <div class="nav-logo">L<span>&</span>S Signature</div>
+    <ul class="nav-links">
+      <li><a href="index.html">Retour au site</a></li>
+      <li><a href="#admin">Administration</a></li>
+    </ul>
+  </nav>
+
+  <main class="section admin-section" id="admin">
+    <div class="section-inner">
+      <div class="section-header">
+        <span class="section-tag">Espace Admin</span>
+        <h2 class="section-title">Gestion du site <em>L&S Signature</em></h2>
+      </div>
+
+      <div id="adminLogin" class="admin-card admin-login">
+        <p>Connectez-vous avec vos identifiants pour modifier le contenu du site.</p>
+        <div class="form-field">
+          <label for="adminEmail">Email</label>
+          <input id="adminEmail" type="email" placeholder="Adresse e-mail">
+        </div>
+        <div class="form-field">
+          <label for="adminPassword">Mot de passe</label>
+          <input id="adminPassword" type="password" placeholder="Mot de passe">
+        </div>
+        <button class="btn-primary" id="adminLoginBtn" type="button">Se connecter</button>
+        <div class="admin-message" id="adminMessage"></div>
+      </div>
+
+      <div id="adminPanel" class="admin-card admin-panel" style="display:none;">
+        <div class="admin-toolbar">
+          <button class="btn-primary" id="saveConfigBtn" type="button">Enregistrer local</button>
+          <button class="btn-primary" id="saveSupabaseBtn" type="button">Enregistrer sur Supabase</button>
+          <button class="btn-outline" id="resetConfigBtn" type="button">Réinitialiser par défaut</button>
+          <button class="btn-outline" id="logoutBtn" type="button">Se déconnecter</button>
+        </div>
+        <div class="admin-config">
+          <h3>Configuration Supabase</h3>
+          <div class="form-field">
+            <label for="supabaseUrl">URL Supabase</label>
+            <input id="supabaseUrl" type="text" placeholder="https://xyz.supabase.co">
+          </div>
+          <div class="form-field">
+            <label for="supabaseKey">Clé Anonyme Supabase</label>
+            <input id="supabaseKey" type="text" placeholder="Anon key Supabase">
+          </div>
+          <button class="btn-outline" id="loadSupabaseBtn" type="button">Charger depuis Supabase</button>
+          <div class="admin-message" id="supabaseStatus"></div>
+        </div>
+        <p>Modifiez le contenu du site ici. Vous pouvez ajouter des photos, changer les prix, ajuster le calendrier ou modifier les textes.</p>
+        <textarea id="adminJson" class="admin-json" aria-label="Éditeur JSON de configuration"></textarea>
+        <div class="admin-message" id="adminStatus"></div>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <div class="footer-logo">L&amp;S Signature</div>
+    <div class="footer-tagline">Administration locale du site</div>
+    <div class="footer-bottom">© 2026 L&amp;S Signature — Espace Admin</div>
+  </footer>
+
+  <script src="js/content.js"></script>
+  <script src="js/supabase.js"></script>
+  <script src="js/admin.js"></script>
+</body>
+</html>
