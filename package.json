@@ -2,7 +2,8 @@
   "name": "ls-signature",
   "private": true,
   "scripts": {
-    "generate-env": "node scripts/generate-env.js"
+    "generate-env": "node scripts/generate-env.js",
+    "build": "node scripts/generate-env.js"
   },
   "dependencies": {
     "dotenv": "^16.1.5"

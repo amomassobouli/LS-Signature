@@ -1,16 +1,23 @@
 const fs = require('fs');
 const path = require('path');
-const dotenv = require('dotenv');
 
 const envFile = path.resolve(__dirname, '..', '.env');
 const outFile = path.resolve(__dirname, '..', 'js', 'env.js');
 
-if (!fs.existsSync(envFile)) {
-  console.error('.env file not found. Create one from .env.example first.');
-  process.exit(1);
+/* En local : lit .env (via dotenv) si présent.
+   Sur Vercel : il n'y a pas de fichier .env dans le build — les variables
+   sont injectées directement dans process.env depuis Project Settings →
+   Environment Variables. Les deux sources sont donc supportées ici. */
+let env = process.env;
+if (fs.existsSync(envFile)) {
+  const dotenv = require('dotenv');
+  env = { ...process.env, ...dotenv.parse(fs.readFileSync(envFile)) };
 }
 
-const env = dotenv.parse(fs.readFileSync(envFile));
+if (!env.SUPABASE_URL) {
+  console.warn('SUPABASE_URL absente (.env local ou variables Vercel) — js/env.js sera généré vide.');
+}
+
 const content = `window.SUPABASE_CONFIG = ${JSON.stringify({
   url: env.SUPABASE_URL || '',
   apiKey: env.SUPABASE_API_KEY || '',
@@ -18,4 +25,4 @@ const content = `window.SUPABASE_CONFIG = ${JSON.stringify({
 }, null, 2)};\n`;
 
 fs.writeFileSync(outFile, content, 'utf8');
-console.log('Generated js/env.js from .env');
+console.log('Generated js/env.js');
