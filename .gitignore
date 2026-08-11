@@ -16,6 +16,9 @@ Desktop.ini
 node_modules/
 npm-debug.log
 
+# Local env output
+js/env.js
+
 # Fichiers temporaires
 *.tmp
 *.bak

@@ -50,11 +50,26 @@ function getSavedData() {
 
 function getSupabaseConfig() {
   const stored = localStorage.getItem(SUPABASE_CONFIG_STORAGE_KEY);
-  if (!stored) return { url: '', key: '' };
+  const envConfig = window.SUPABASE_CONFIG || { url: '', apiKey: '', anonKey: '' };
+
+  if (!stored) {
+    return {
+      url: envConfig.url || '',
+      key: envConfig.anonKey || envConfig.apiKey || ''
+    };
+  }
+
   try {
-    return JSON.parse(stored);
+    const parsed = JSON.parse(stored);
+    return {
+      url: parsed.url || envConfig.url || '',
+      key: parsed.key || envConfig.anonKey || envConfig.apiKey || ''
+    };
   } catch (err) {
-    return { url: '', key: '' };
+    return {
+      url: envConfig.url || '',
+      key: envConfig.anonKey || envConfig.apiKey || ''
+    };
   }
 }
 

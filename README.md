@@ -104,6 +104,21 @@ git push -u origin main
 | Polices | Lien Google Fonts dans `<head>` |
 | Photos galerie | `css/style.css` classes `.gi-1` à `.gi-6` |
 
+## 🔒 Clés secrètes et configuration
+
+- Ne stocke pas tes clés Supabase dans le dépôt Git.
+- Utilise un fichier `.env` local qui sera ignoré par Git.
+- Exemple disponible dans `.env.example`.
+
+### Exemple de `.env`
+
+```env
+SUPABASE_URL=https://dlyogbvoralrxyuizwks.supabase.co
+SUPABASE_KEY=ta_cle_anon_publique
+```
+
+> N’ajoute jamais de clés privées ou `service_role` dans `.env.example` ou GitHub public.
+
 ## 📱 Responsive
 Le site est optimisé pour :
 - 📱 Mobile (< 600px)
