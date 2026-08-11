@@ -739,6 +739,11 @@ img { max-width: 100%; display: block; }
   /* Remplacez ces backgrounds par vos photos : background-image: url('images/photo1.jpg'); */
 }
 
+.gallery-item:focus-visible {
+  outline: 2px solid var(--gold-dark);
+  outline-offset: 3px;
+}
+
 .gi-1 { background-color: #f2c4ce; background-image: url('https://images.pexels.com/photos/1319460/pexels-photo-1319460.jpeg?auto=compress&cs=tinysrgb&w=400&h=500'); background-size: cover; background-position: center; }
 .gi-2 { background-color: #e8d5b0; background-image: url('https://images.pexels.com/photos/3997379/pexels-photo-3997379.jpeg?auto=compress&cs=tinysrgb&w=400&h=500'); background-size: cover; background-position: center; }
 .gi-3 { background-color: #f2c4ce; background-image: url('https://images.pexels.com/photos/1762851/pexels-photo-1762851.jpeg?auto=compress&cs=tinysrgb&w=400&h=500'); background-size: cover; background-position: center; }

@@ -12,13 +12,13 @@ create table if not exists public.site_config (
 
 insert into public.site_config (id, config) values (
   1,
-  '{
+  $json${
     "site": {
       "pageTitle": "L&S Signature – Nail Art & Manicure",
       "description": "L&S Signature – Institut de manucure et nail art à Paris.",
       "heroBadge": "✦ Nail Art & Soin des Mains ✦",
       "heroTitle": "L&S Signature",
-      "heroSubtitle": "L\'art de la manucure raffinée. Des mains soignées, une élégance intemporelle.",
+      "heroSubtitle": "L'art de la manucure raffinée. Des mains soignées, une élégance intemporelle.",
       "ctaPrimary": "Réserver maintenant",
       "ctaSecondary": "Nos prestations",
       "whatsappNumber": "33600000000",
@@ -71,24 +71,66 @@ insert into public.site_config (id, config) values (
       { "stars": "★★★★★", "text": "\"Le soin luxe mains est un vrai moment de détente. Je repars à chaque fois avec de belles mains et le sourire. Merci L&S !\"", "author": "— Léa T." }
     ],
     "calendar": {
-      "bookedSlots": {
-        "2025-6-5": ["10:00", "11:00", "14:00"],
-        "2025-6-12": ["14:30", "15:00", "16:00", "17:00"],
-        "2025-6-19": ["10:30", "11:30"],
-        "2025-6-26": ["10:00", "14:00", "15:30"]
-      }
-    },
-    "admin": {
-      "email": "ls_signature@zohomail.eu",
-      "password": "MOOG2026!"
+      "bookedSlots": {}
     }
-  }'::jsonb
-);
+  }$json$::jsonb
+) on conflict (id) do nothing;
 
--- Si Supabase applique RLS, créez des policies pour autoriser l'accès public via la clé anon.
--- Dans la plupart des cas, vous pouvez aussi désactiver RLS pour cette table.
+-- ============================================================
+-- SÉCURITÉ — accès en lecture seule pour la clé publique (anon)
+-- ============================================================
+-- La clé "anon" est par nature publique : elle est visible dans le
+-- navigateur de chaque visiteur du site. Elle ne doit donc JAMAIS avoir
+-- le droit d'écrire dans cette table, sinon n'importe qui peut réécrire
+-- tout le contenu du site (défacement, faux numéro de téléphone, XSS
+-- stocké, etc.) sans jamais se connecter à /admin.html.
+--
+-- ⚠️ Si votre projet a déjà les anciennes policies "anon_insert" /
+-- "anon_update" (écriture publique ouverte), exécutez ce script dans
+-- Supabase → SQL Editor pour les remplacer par un accès lecture seule.
 
 alter table public.site_config enable row level security;
-create policy anon_select on public.site_config for select using (true);
-create policy anon_insert on public.site_config for insert with check (true);
-create policy anon_update on public.site_config for update using (true) with check (true);
+
+drop policy if exists anon_select on public.site_config;
+drop policy if exists anon_insert on public.site_config;
+drop policy if exists anon_update on public.site_config;
+
+create policy anon_select on public.site_config
+  for select using (true);
+
+-- L'écriture est réservée aux utilisateurs authentifiés via Supabase Auth
+-- (pas à la clé "anon"). js/admin.js se connecte avec
+-- supabaseSignIn(email, password) avant d'appeler supabaseSaveSiteConfig() ;
+-- le jeton obtenu est envoyé comme Authorization Bearer et validé ici.
+drop policy if exists authenticated_write on public.site_config;
+create policy authenticated_write on public.site_config
+  for all using (auth.role() = 'authenticated')
+  with check (auth.role() = 'authenticated');
+
+-- ⚠️ Étape manuelle restante (ce script ne peut pas la faire) : créez le
+-- compte admin dans Supabase → Authentication → Users → "Add user", avec
+-- le même e-mail/mot de passe que ceux utilisés pour se connecter à
+-- /admin.html. Tant que ce compte n'existe pas, la connexion admin
+-- fonctionne encore (verrou local de secours dans js/admin-auth.js), mais
+-- le bouton "Enregistrer sur Supabase" échouera avec une erreur 401/403 —
+-- c'est le comportement attendu : l'écriture publique reste fermée
+-- jusqu'à ce qu'un vrai compte authentifié existe.
+
+-- ============================================================
+-- STOCKAGE — upload de photos depuis l'admin (bucket "gallery")
+-- ============================================================
+-- Bucket public en lecture (les photos doivent être visibles par tous les
+-- visiteurs du site), mais l'upload est réservé aux comptes authentifiés,
+-- même logique que pour site_config ci-dessus.
+
+insert into storage.buckets (id, name, public)
+values ('gallery', 'gallery', true)
+on conflict (id) do nothing;
+
+drop policy if exists gallery_public_read on storage.objects;
+create policy gallery_public_read on storage.objects
+  for select using (bucket_id = 'gallery');
+
+drop policy if exists gallery_authenticated_upload on storage.objects;
+create policy gallery_authenticated_upload on storage.objects
+  for insert with check (bucket_id = 'gallery' and auth.role() = 'authenticated');

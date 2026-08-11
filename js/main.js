@@ -13,13 +13,18 @@ window.addEventListener('scroll', () => {
 });
 
 /* ---- Menu burger (mobile) ---- */
-document.getElementById('burger').addEventListener('click', () => {
+const burgerBtn = document.getElementById('burger');
+burgerBtn.setAttribute('aria-expanded', 'false');
+burgerBtn.setAttribute('aria-controls', 'mobileMenu');
+burgerBtn.addEventListener('click', () => {
   const menu = document.getElementById('mobileMenu');
-  menu.classList.toggle('open');
+  const isOpen = menu.classList.toggle('open');
+  burgerBtn.setAttribute('aria-expanded', String(isOpen));
 });
 
 function closeMobile() {
   document.getElementById('mobileMenu').classList.remove('open');
+  burgerBtn.setAttribute('aria-expanded', 'false');
 }
 
 /* ---- Scroll doux vers une section ---- */
@@ -44,10 +49,14 @@ function closeModal() {
 
 /* ---- Lightbox galerie ---- */
 function openLightbox(src, caption) {
-  document.getElementById('lightboxImg').src       = src;
+  const img = document.getElementById('lightboxImg');
+  img.src = src;
+  img.alt = caption;
   document.getElementById('lightboxCaption').textContent = caption;
-  document.getElementById('lightbox').classList.add('active');
+  const lightbox = document.getElementById('lightbox');
+  lightbox.classList.add('active');
   document.body.style.overflow = 'hidden';
+  document.getElementById('lightboxClose').focus();
 }
 
 function closeLightbox() {

@@ -166,6 +166,9 @@ document.getElementById('nextMonth').addEventListener('click', () => {
 
 /* ---- Validation & confirmation ---- */
 document.getElementById('bookBtn').addEventListener('click', () => {
+  const form = document.getElementById('bookingForm');
+  if (!form.reportValidity()) return;
+
   const fname   = document.getElementById('fname').value.trim();
   const lname   = document.getElementById('lname').value.trim();
   const email   = document.getElementById('email').value.trim();

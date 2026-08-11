@@ -1,5 +1,16 @@
 const STORAGE_KEY = 'lsSignatureAdminData';
 
+/* Schémas d'URL autorisés pour tout champ affiché comme lien/image
+   provenant du contenu (admin ou Supabase) — bloque javascript:, data:, etc. */
+function isSafeUrl(url) {
+  if (typeof url !== 'string') return false;
+  const trimmed = url.trim();
+  if (trimmed === '' || trimmed.startsWith('#')) return true;
+  if (/^(https?:|mailto:|tel:)/i.test(trimmed)) return true;
+  if (trimmed.startsWith('/') || trimmed.startsWith('./') || trimmed.startsWith('../')) return true;
+  return false;
+}
+
 function normalizeAppData(data) {
   const defaults = window.APP_DATA;
   if (!data || typeof data !== 'object') return defaults;
@@ -10,8 +21,7 @@ function normalizeAppData(data) {
     gallery: Array.isArray(data.gallery) && data.gallery.length ? data.gallery : defaults.gallery,
     testimonials: Array.isArray(data.testimonials) && data.testimonials.length ? data.testimonials : defaults.testimonials,
     bookingInfo: { ...defaults.bookingInfo, ...(data.bookingInfo || {}) },
-    calendar: { ...defaults.calendar, ...(data.calendar || {}) },
-    admin: { ...defaults.admin, ...(data.admin || {}) }
+    calendar: { ...defaults.calendar, ...(data.calendar || {}) }
   };
 }
 
@@ -48,34 +58,74 @@ function buildWhatsappUrl(number, text) {
 function createServiceCard(service) {
   const card = document.createElement('div');
   card.className = 'service-card';
-  card.innerHTML = `
-    <div class="service-icon">${service.icon}</div>
-    <div class="service-name">${service.name}</div>
-    <p class="service-desc">${service.desc}</p>
-    <div class="service-price">${service.price}</div>
-  `;
+
+  const icon = document.createElement('div');
+  icon.className = 'service-icon';
+  icon.textContent = service.icon;
+
+  const name = document.createElement('div');
+  name.className = 'service-name';
+  name.textContent = service.name;
+
+  const desc = document.createElement('p');
+  desc.className = 'service-desc';
+  desc.textContent = service.desc;
+
+  const price = document.createElement('div');
+  price.className = 'service-price';
+  price.textContent = service.price;
+
+  card.append(icon, name, desc, price);
   return card;
 }
 
-function createGalleryItem(item, index) {
+function createGalleryItem(item) {
   const galleryItem = document.createElement('div');
   galleryItem.className = 'gallery-item';
-  galleryItem.style.backgroundImage = `url('${item.image}')`;
-  galleryItem.innerHTML = `
-    <div class="gallery-overlay"><span>${item.caption}</span></div>
-  `;
-  galleryItem.addEventListener('click', () => openLightbox(item.image, item.caption));
+  if (isSafeUrl(item.image)) {
+    galleryItem.style.backgroundImage = `url("${item.image.replace(/"/g, '%22')}")`;
+  }
+
+  const overlay = document.createElement('div');
+  overlay.className = 'gallery-overlay';
+  const overlayText = document.createElement('span');
+  overlayText.textContent = item.caption;
+  overlay.appendChild(overlayText);
+  galleryItem.appendChild(overlay);
+
+  galleryItem.setAttribute('role', 'button');
+  galleryItem.setAttribute('tabindex', '0');
+  galleryItem.setAttribute('aria-label', `Agrandir la photo : ${item.caption}`);
+
+  const open = () => openLightbox(item.image, item.caption);
+  galleryItem.addEventListener('click', open);
+  galleryItem.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      open();
+    }
+  });
+
   return galleryItem;
 }
 
 function createTestimonial(testimonial) {
   const card = document.createElement('div');
   card.className = 'testi-card';
-  card.innerHTML = `
-    <div class="stars">${testimonial.stars}</div>
-    <p class="testi-text">${testimonial.text}</p>
-    <div class="testi-author">${testimonial.author}</div>
-  `;
+
+  const stars = document.createElement('div');
+  stars.className = 'stars';
+  stars.textContent = testimonial.stars;
+
+  const text = document.createElement('p');
+  text.className = 'testi-text';
+  text.textContent = testimonial.text;
+
+  const author = document.createElement('div');
+  author.className = 'testi-author';
+  author.textContent = testimonial.author;
+
+  card.append(stars, text, author);
   return card;
 }
 
@@ -85,7 +135,10 @@ function populateFooterLinks(links) {
   list.innerHTML = '';
   links.forEach(link => {
     const li = document.createElement('li');
-    li.innerHTML = `<a href="${link.url}">${link.label}</a>`;
+    const a = document.createElement('a');
+    a.href = isSafeUrl(link.url) ? link.url : '#';
+    a.textContent = link.label;
+    li.appendChild(a);
     list.appendChild(li);
   });
 }
@@ -117,7 +170,11 @@ function populateBookingInfo(bookingInfo, site) {
     hoursList.innerHTML = '';
     bookingInfo.hours.forEach(item => {
       const li = document.createElement('li');
-      li.innerHTML = `<span>${item.label}</span><span>${item.value}</span>`;
+      const label = document.createElement('span');
+      label.textContent = item.label;
+      const value = document.createElement('span');
+      value.textContent = item.value;
+      li.append(label, value);
       hoursList.appendChild(li);
     });
   }
@@ -128,7 +185,7 @@ function populateBookingInfo(bookingInfo, site) {
   }
 
   const zohoButton = document.getElementById('zohoBookingLink');
-  if (zohoButton) {
+  if (zohoButton && isSafeUrl(site.zohoLink)) {
     zohoButton.href = site.zohoLink;
   }
 
@@ -146,7 +203,7 @@ function populateBookingText() {
   const bookingTitle = document.getElementById('bookingTitle');
   const bookingText = document.getElementById('bookingText');
   if (bookingTitle) bookingTitle.innerHTML = 'Réservez votre <em>moment</em>';
-  if (bookingText) bookingText.textContent = 'Choisissez votre créneau directement en ligne. Confirmation par e-mail dans les plus brefs délais.';
+  if (bookingText) bookingText.textContent = 'Choisissez votre créneau directement en ligne, puis confirmez via WhatsApp — nous revenons vers vous rapidement.';
 }
 
 function populateHero(site) {
@@ -156,7 +213,7 @@ function populateHero(site) {
   const primaryBtn = document.getElementById('heroPrimaryBtn');
   const secondaryBtn = document.getElementById('heroSecondaryBtn');
 
-  if (titleEl) titleEl.innerHTML = site.heroTitle;
+  if (titleEl) titleEl.textContent = site.heroTitle;
   if (subtitleEl) subtitleEl.textContent = site.heroSubtitle;
   if (badgeEl) badgeEl.textContent = site.heroBadge;
   if (primaryBtn) primaryBtn.textContent = site.ctaPrimary;

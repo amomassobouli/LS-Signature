@@ -15,10 +15,14 @@ let logoutBtn;
 let supabaseUrlInput;
 let supabaseKeyInput;
 let supabaseStatus;
+let galleryFileInput;
+let galleryCaptionInput;
+let uploadImageBtn;
+let uploadStatus;
 
 const STORAGE_KEY = 'lsSignatureAdminData';
 const AUTH_KEY = 'lsSignatureAdminAuth';
-const SUPABASE_CONFIG_STORAGE_KEY = 'lsSignatureSupabaseConfig';
+/* SUPABASE_CONFIG_STORAGE_KEY est déjà déclarée dans supabase.js (chargé avant ce fichier) */
 
 function initAdminElements() {
   adminEmailInput = document.getElementById('adminEmail');
@@ -38,6 +42,10 @@ function initAdminElements() {
   supabaseUrlInput = document.getElementById('supabaseUrl');
   supabaseKeyInput = document.getElementById('supabaseKey');
   supabaseStatus = document.getElementById('supabaseStatus');
+  galleryFileInput = document.getElementById('galleryFile');
+  galleryCaptionInput = document.getElementById('galleryCaption');
+  uploadImageBtn = document.getElementById('uploadImageBtn');
+  uploadStatus = document.getElementById('uploadStatus');
 }
 
 function getSavedData() {
@@ -50,30 +58,7 @@ function getSavedData() {
   }
 }
 
-function getSupabaseConfig() {
-  const stored = localStorage.getItem(SUPABASE_CONFIG_STORAGE_KEY);
-  const envConfig = window.SUPABASE_CONFIG || { url: '', apiKey: '', anonKey: '' };
-
-  if (!stored) {
-    return {
-      url: envConfig.url || '',
-      key: envConfig.anonKey || envConfig.apiKey || ''
-    };
-  }
-
-  try {
-    const parsed = JSON.parse(stored);
-    return {
-      url: parsed.url || envConfig.url || '',
-      key: parsed.key || envConfig.anonKey || envConfig.apiKey || ''
-    };
-  } catch (err) {
-    return {
-      url: envConfig.url || '',
-      key: envConfig.anonKey || envConfig.apiKey || ''
-    };
-  }
-}
+/* getSupabaseConfig() est défini dans supabase.js (chargé avant ce fichier) */
 
 function saveData(data) {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(data, null, 2));
@@ -113,17 +98,35 @@ function setSupabaseStatus(message, type = 'info') {
   supabaseStatus.style.color = type === 'error' ? '#bf0a30' : '#276749';
 }
 
-function loginAdmin() {
+function unlockAdminPanel(message) {
+  localStorage.setItem(AUTH_KEY, 'true');
+  adminLoginBox.style.display = 'none';
+  adminPanel.style.display = 'block';
+  renderEditor();
+  renderSupabaseConfig();
+  setLoginMessage(message, 'success');
+}
+
+async function loginAdmin() {
   const email = adminEmailInput.value.trim();
   const password = adminPasswordInput.value;
 
-  if (email === window.APP_DATA.admin.email && password === window.APP_DATA.admin.password) {
-    localStorage.setItem(AUTH_KEY, 'true');
-    adminLoginBox.style.display = 'none';
-    adminPanel.style.display = 'block';
-    renderEditor();
-    renderSupabaseConfig();
-    setLoginMessage('Connecté avec succès.', 'success');
+  /* Priorité à une vraie session Supabase Auth : c'est elle qui autorisera
+     l'écriture une fois les policies RLS restreintes à "authenticated". */
+  if (hasSupabaseConfig()) {
+    try {
+      await supabaseSignIn(email, password);
+      unlockAdminPanel('Connecté avec succès (session Supabase active — la sauvegarde en ligne fonctionnera).');
+      return;
+    } catch (err) {
+      /* pas de compte Supabase Auth pour ces identifiants : on retombe sur
+         le verrou local ci-dessous (accès à l'éditeur, sans écriture distante) */
+    }
+  }
+
+  const credentials = window.ADMIN_CREDENTIALS || {};
+  if (email === credentials.email && password === credentials.password) {
+    unlockAdminPanel('Connecté avec succès (mode local — créez un compte Supabase Auth avec ces identifiants pour activer la sauvegarde en ligne).');
   } else {
     setLoginMessage('Identifiants incorrects.', 'error');
   }
@@ -131,6 +134,7 @@ function loginAdmin() {
 
 function logoutAdmin() {
   localStorage.removeItem(AUTH_KEY);
+  supabaseSignOut();
   adminLoginBox.style.display = 'block';
   adminPanel.style.display = 'none';
   adminEmailInput.value = '';
@@ -193,6 +197,42 @@ async function loadConfigSupabase() {
   }
 }
 
+function setUploadStatus(message, type = 'info') {
+  uploadStatus.textContent = message;
+  uploadStatus.style.color = type === 'error' ? '#bf0a30' : '#276749';
+}
+
+async function uploadGalleryImage() {
+  const file = galleryFileInput.files[0];
+  if (!file) {
+    setUploadStatus('Choisissez une image.', 'error');
+    return;
+  }
+
+  const caption = galleryCaptionInput.value.trim() || file.name.replace(/\.[^.]+$/, '');
+
+  uploadImageBtn.disabled = true;
+  setUploadStatus('Envoi en cours…');
+
+  try {
+    const imageUrl = await supabaseUploadImage(file);
+
+    const parsed = JSON.parse(adminJson.value);
+    if (!parsed || typeof parsed !== 'object') throw new Error('JSON invalide.');
+    parsed.gallery = Array.isArray(parsed.gallery) ? parsed.gallery : [];
+    parsed.gallery.push({ image: imageUrl, caption });
+    adminJson.value = JSON.stringify(parsed, null, 2);
+
+    galleryFileInput.value = '';
+    galleryCaptionInput.value = '';
+    setUploadStatus('Photo ajoutée à la galerie ci-dessous — pensez à "Enregistrer" pour publier.', 'success');
+  } catch (err) {
+    setUploadStatus('Erreur : ' + err.message, 'error');
+  } finally {
+    uploadImageBtn.disabled = false;
+  }
+}
+
 function resetConfig() {
   localStorage.removeItem(STORAGE_KEY);
   renderEditor();
@@ -211,6 +251,7 @@ window.addEventListener('DOMContentLoaded', () => {
   saveConfigBtn.addEventListener('click', saveConfig);
   saveSupabaseBtn.addEventListener('click', saveConfigSupabase);
   loadSupabaseBtn.addEventListener('click', loadConfigSupabase);
+  uploadImageBtn.addEventListener('click', uploadGalleryImage);
   resetConfigBtn.addEventListener('click', resetConfig);
   restoreDefaultsBtn.addEventListener('click', restoreDefaults);
   logoutBtn.addEventListener('click', logoutAdmin);

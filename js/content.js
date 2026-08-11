@@ -30,7 +30,7 @@ window.APP_DATA = {
     {
       icon: '✨',
       name: 'Pose Semi-Permanent',
-      desc: 'Vernis semi-permanent longue durée jusqu'à 3 semaines. Large palette de couleurs tendance.',
+      desc: 'Vernis semi-permanent longue durée jusqu\'à 3 semaines. Large palette de couleurs tendance.',
       price: 'À partir de 45 €'
     },
     {
@@ -131,15 +131,9 @@ window.APP_DATA = {
     }
   ],
   calendar: {
-    bookedSlots: {
-      '2025-6-5': ['10:00', '11:00', '14:00'],
-      '2025-6-12': ['14:30', '15:00', '16:00', '17:00'],
-      '2025-6-19': ['10:30', '11:30'],
-      '2025-6-26': ['10:00', '14:00', '15:30']
-    }
-  },
-  admin: {
-    email: 'ls_signature@zohomail.eu',
-    password: 'MOOG2026!'
+    /* À alimenter depuis une source vivante (Supabase / agenda Zoho).
+       Laissé vide : les anciennes dates de démo (juin 2025) sont
+       passées et n'ont plus de sens comme créneaux "réservés". */
+    bookedSlots: {}
   }
 };

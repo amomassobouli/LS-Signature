@@ -5,6 +5,17 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>L&S Signature – Nail Art & Manicure</title>
   <meta name="description" content="L&S Signature – Institut de manucure et nail art à Paris. Réservez votre rendez-vous en ligne.">
+  <link rel="icon" type="image/svg+xml" href="images/favicon.svg">
+
+  <meta property="og:type" content="business.business">
+  <meta property="og:title" content="L&S Signature – Nail Art & Manicure">
+  <meta property="og:description" content="Institut de manucure et nail art à Paris. Réservez votre rendez-vous en ligne.">
+  <meta property="og:image" content="https://images.pexels.com/photos/1319460/pexels-photo-1319460.jpeg?auto=compress&cs=tinysrgb&w=800">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="L&S Signature – Nail Art & Manicure">
+  <meta name="twitter:description" content="Institut de manucure et nail art à Paris. Réservez votre rendez-vous en ligne.">
+  <meta name="twitter:image" content="https://images.pexels.com/photos/1319460/pexels-photo-1319460.jpeg?auto=compress&cs=tinysrgb&w=800">
+
   <link rel="stylesheet" href="css/style.css">
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
 </head>
@@ -100,21 +111,21 @@
             <div class="form-row">
               <div class="form-field">
                 <label for="fname">Prénom</label>
-                <input id="fname" type="text" placeholder="Prénom">
+                <input id="fname" type="text" placeholder="Prénom" required>
               </div>
               <div class="form-field">
                 <label for="lname">Nom</label>
-                <input id="lname" type="text" placeholder="Nom">
+                <input id="lname" type="text" placeholder="Nom" required>
               </div>
             </div>
             <div class="form-row">
               <div class="form-field">
                 <label for="email">E-mail</label>
-                <input id="email" type="email" placeholder="email@exemple.com">
+                <input id="email" type="email" placeholder="email@exemple.com" required>
               </div>
               <div class="form-field">
                 <label for="service">Prestation</label>
-                <select id="service"></select>
+                <select id="service" required></select>
               </div>
             </div>
             <div class="form-field form-field--check">
@@ -167,7 +178,7 @@
 
   <!-- ===== LIGHTBOX GALERIE ===== -->
   <div class="lightbox-overlay" id="lightbox" onclick="closeLightbox()">
-    <button class="lightbox-close" onclick="closeLightbox()">✕</button>
+    <button class="lightbox-close" id="lightboxClose" onclick="closeLightbox()" aria-label="Fermer">✕</button>
     <img id="lightboxImg" src="" alt="">
     <div class="lightbox-caption" id="lightboxCaption"></div>
   </div>
@@ -185,6 +196,7 @@
 
   <script src="js/main.js"></script>
   <script src="js/content.js"></script>
+  <script src="js/env.js"></script>
   <script src="js/supabase.js"></script>
   <script src="js/site.js"></script>
   <script src="js/calendar.js"></script>

@@ -4,6 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Admin — L&S Signature</title>
+  <link rel="icon" type="image/svg+xml" href="images/favicon.svg">
+  <meta name="robots" content="noindex, nofollow">
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
@@ -57,6 +59,19 @@
           <button class="btn-outline" id="restoreDefaultsBtn" type="button">Restaurer valeurs par défaut</button>
           <div class="admin-message" id="supabaseStatus"></div>
         </div>
+        <div class="admin-config">
+          <h3>Ajouter une photo à la galerie</h3>
+          <div class="form-field">
+            <label for="galleryFile">Image</label>
+            <input id="galleryFile" type="file" accept="image/*">
+          </div>
+          <div class="form-field">
+            <label for="galleryCaption">Légende</label>
+            <input id="galleryCaption" type="text" placeholder="Légende de la photo">
+          </div>
+          <button class="btn-outline" id="uploadImageBtn" type="button">Uploader et ajouter à la galerie</button>
+          <div class="admin-message" id="uploadStatus"></div>
+        </div>
         <p>Modifiez le contenu du site ici. Vous pouvez ajouter des photos, changer les prix, ajuster le calendrier ou modifier les textes.</p>
         <textarea id="adminJson" class="admin-json" aria-label="Éditeur JSON de configuration"></textarea>
         <div class="admin-message" id="adminStatus"></div>
@@ -71,6 +86,7 @@
   </footer>
 
   <script src="js/content.js"></script>
+  <script src="js/admin-auth.js"></script>
   <script src="js/env.js"></script>
   <script src="js/supabase.js"></script>
   <script src="js/admin.js"></script>
