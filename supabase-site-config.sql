@@ -27,9 +27,8 @@ insert into public.site_config (id, config) values (
       "phone": "+33 6 00 00 00 00",
       "email": "ls_signature@zohomail.eu",
       "footerLinks": [
-        { "label": "Instagram", "url": "#" },
-        { "label": "Facebook", "url": "#" },
-        { "label": "Mentions légales", "url": "#" },
+        { "label": "Mentions légales", "url": "mentions-legales.html" },
+        { "label": "Confidentialité", "url": "confidentialite.html" },
         { "label": "Contact", "url": "mailto:ls_signature@zohomail.eu" }
       ],
       "zohoLink": "https://lssignature.zohobookings.eu/#/263452000000039045"

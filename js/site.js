@@ -1,13 +1,19 @@
 const STORAGE_KEY = 'lsSignatureAdminData';
 
 /* Schémas d'URL autorisés pour tout champ affiché comme lien/image
-   provenant du contenu (admin ou Supabase) — bloque javascript:, data:, etc. */
+   provenant du contenu (admin ou Supabase) — bloque javascript:, data:, etc.
+   Les caractères de contrôle sont retirés avant l'analyse : certains
+   navigateurs les ignorent lors du parsing du schéma d'une URL, ce qui
+   permettrait de contourner un filtre naïf (ex. "java\tscript:..."). */
 function isSafeUrl(url) {
   if (typeof url !== 'string') return false;
-  const trimmed = url.trim();
-  if (trimmed === '' || trimmed.startsWith('#')) return true;
-  if (/^(https?:|mailto:|tel:)/i.test(trimmed)) return true;
-  if (trimmed.startsWith('/') || trimmed.startsWith('./') || trimmed.startsWith('../')) return true;
+  const value = url.trim().replace(/[\x00-\x1f\x7f]/g, '');
+  if (value === '') return true;
+  if (value.startsWith('#') || value.startsWith('/') || value.startsWith('./') || value.startsWith('../')) return true;
+  if (/^(https?:|mailto:|tel:)/i.test(value)) return true;
+  /* chemin relatif simple (ex. "mentions-legales.html") : sûr tant qu'il ne
+     contient pas de ":" avant un "/", ce qui indiquerait un schéma d'URI */
+  if (!value.includes(':')) return true;
   return false;
 }
 

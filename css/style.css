@@ -1032,6 +1032,29 @@ footer {
   line-height: 1.5;
 }
 
+/* ============================================
+   PAGES LÉGALES
+   ============================================ */
+.legal-content h3 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.3rem;
+  color: var(--text-dark);
+  margin: 2rem 0 0.75rem;
+}
+
+.legal-content h3:first-of-type { margin-top: 0.5rem; }
+
+.legal-content p,
+.legal-content li {
+  color: var(--text-mid);
+  line-height: 1.7;
+  margin-bottom: 0.75rem;
+}
+
+.legal-content ul { padding-left: 1.2rem; }
+
+.legal-content a { color: var(--gold-dark); }
+
 .admin-login .form-field,
 .admin-panel .form-field {
   margin-bottom: 1rem;
