@@ -88,9 +88,13 @@ function createServiceCard(service) {
 function createGalleryItem(item) {
   const galleryItem = document.createElement('div');
   galleryItem.className = 'gallery-item';
+
+  const bg = document.createElement('div');
+  bg.className = 'gallery-item-bg';
   if (isSafeUrl(item.image)) {
-    galleryItem.style.backgroundImage = `url("${item.image.replace(/"/g, '%22')}")`;
+    bg.style.backgroundImage = `url("${item.image.replace(/"/g, '%22')}")`;
   }
+  galleryItem.appendChild(bg);
 
   const overlay = document.createElement('div');
   overlay.className = 'gallery-overlay';

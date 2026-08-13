@@ -102,7 +102,13 @@ img { max-width: 100%; display: block; }
   transition: background var(--transition);
 }
 
-.nav-cta:hover { background: var(--gold-dark); }
+.nav-cta { transition: background var(--transition), transform var(--transition), box-shadow var(--transition); }
+
+.nav-cta:hover {
+  background: var(--gold-dark);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(160, 120, 64, 0.3);
+}
 
 .nav-burger {
   display: none;
@@ -179,6 +185,16 @@ img { max-width: 100%; display: block; }
   border-radius: 50%;
   background: radial-gradient(circle, rgba(201, 169, 110, 0.2) 0%, transparent 70%);
   pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .hero::before { animation: floatBlob 16s ease-in-out infinite; }
+  .hero::after  { animation: floatBlob 20s ease-in-out infinite reverse; }
+}
+
+@keyframes floatBlob {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50%      { transform: translate(-18px, 16px) scale(1.06); }
 }
 
 .hero-content {
@@ -272,7 +288,11 @@ img { max-width: 100%; display: block; }
   transition: all var(--transition);
 }
 
-.btn-outline:hover { background: var(--rose-light); }
+.btn-outline:hover {
+  background: var(--rose-light);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px var(--shadow);
+}
 
 /* ============================================
    DIVIDER
@@ -360,7 +380,14 @@ img { max-width: 100%; display: block; }
 
 .service-card:hover::before { transform: scaleX(1); }
 
-.service-icon { font-size: 1.8rem; margin-bottom: 1rem; }
+.service-icon {
+  font-size: 1.8rem;
+  margin-bottom: 1rem;
+  display: inline-block;
+  transition: transform 0.3s ease;
+}
+
+.service-card:hover .service-icon { transform: scale(1.18) rotate(-4deg); }
 
 .service-name {
   font-family: 'Cormorant Garamond', serif;
@@ -744,6 +771,21 @@ img { max-width: 100%; display: block; }
   outline-offset: 3px;
 }
 
+.gallery-item-bg {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  transition: transform 0.5s ease;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .gallery-item:hover .gallery-item-bg,
+  .gallery-item:focus-visible .gallery-item-bg {
+    transform: scale(1.08);
+  }
+}
+
 .gi-1 { background-color: #f2c4ce; background-image: url('https://images.pexels.com/photos/1319460/pexels-photo-1319460.jpeg?auto=compress&cs=tinysrgb&w=400&h=500'); background-size: cover; background-position: center; }
 .gi-2 { background-color: #e8d5b0; background-image: url('https://images.pexels.com/photos/3997379/pexels-photo-3997379.jpeg?auto=compress&cs=tinysrgb&w=400&h=500'); background-size: cover; background-position: center; }
 .gi-3 { background-color: #f2c4ce; background-image: url('https://images.pexels.com/photos/1762851/pexels-photo-1762851.jpeg?auto=compress&cs=tinysrgb&w=400&h=500'); background-size: cover; background-position: center; }
@@ -856,7 +898,17 @@ img { max-width: 100%; display: block; }
   border: 1px solid var(--rose-light);
   border-radius: 4px;
   padding: 1.8rem 1.5rem;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
 }
+
+.testi-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 32px var(--shadow);
+  border-color: var(--rose-deep);
+}
+
+.stars { transition: transform 0.3s ease; }
+.testi-card:hover .stars { transform: scale(1.08); }
 
 .stars {
   color: var(--gold);
@@ -1068,6 +1120,8 @@ footer {
 @media (max-width: 800px) {
   .admin-toolbar { flex-direction: column; }
 }
+
+.modal-close {
   background: var(--gold);
   color: var(--white);
   border: none;

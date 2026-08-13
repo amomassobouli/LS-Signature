@@ -74,32 +74,41 @@ document.getElementById('modal').addEventListener('click', function(e) {
 });
 
 /* ---- Animation d'entrée au scroll (Intersection Observer) ---- */
-const observer = new IntersectionObserver((entries) => {
-  entries.forEach(entry => {
-    if (entry.isIntersecting) {
-      entry.target.style.opacity  = '1';
-      entry.target.style.transform = 'translateY(0)';
-    }
+const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+if (prefersReducedMotion) {
+  /* Pas d'animation : contenu visible immédiatement */
+  document.querySelectorAll('.service-card, .testi-card, .gallery-item').forEach(el => {
+    el.style.opacity = '1';
   });
-}, { threshold: 0.1 });
+} else {
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.style.opacity   = '1';
+        entry.target.style.transform = 'translateY(0) scale(1)';
+      }
+    });
+  }, { threshold: 0.1 });
 
-/* Animer les cartes de service */
-document.querySelectorAll('.service-card, .testi-card, .gallery-item').forEach(el => {
-  el.style.opacity   = '0';
-  el.style.transform = 'translateY(20px)';
-  el.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
-  observer.observe(el);
-});
+  /* Animer les cartes de service */
+  document.querySelectorAll('.service-card, .testi-card, .gallery-item').forEach(el => {
+    el.style.opacity   = '0';
+    el.style.transform = 'translateY(20px) scale(0.97)';
+    el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+    observer.observe(el);
+  });
 
-/* Décalage progressif pour les cartes */
-document.querySelectorAll('.service-card').forEach((card, i) => {
-  card.style.transitionDelay = (i * 0.08) + 's';
-});
+  /* Décalage progressif pour les cartes */
+  document.querySelectorAll('.service-card').forEach((card, i) => {
+    card.style.transitionDelay = (i * 0.08) + 's';
+  });
 
-document.querySelectorAll('.testi-card').forEach((card, i) => {
-  card.style.transitionDelay = (i * 0.1) + 's';
-});
+  document.querySelectorAll('.testi-card').forEach((card, i) => {
+    card.style.transitionDelay = (i * 0.1) + 's';
+  });
 
-document.querySelectorAll('.gallery-item').forEach((item, i) => {
-  item.style.transitionDelay = (i * 0.06) + 's';
-});
+  document.querySelectorAll('.gallery-item').forEach((item, i) => {
+    item.style.transitionDelay = (i * 0.06) + 's';
+  });
+}
