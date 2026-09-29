@@ -24,7 +24,7 @@ function normalizeAppData(data) {
   return {
     site: { ...defaults.site, ...(data.site || {}) },
     services: Array.isArray(data.services) && data.services.length ? data.services : defaults.services,
-    gallery: Array.isArray(data.gallery) && data.gallery.length ? data.gallery : defaults.gallery,
+    gallery: Array.isArray(data.gallery) ? data.gallery : defaults.gallery,
     testimonials: Array.isArray(data.testimonials) && data.testimonials.length ? data.testimonials : defaults.testimonials,
     bookingInfo: { ...defaults.bookingInfo, ...(data.bookingInfo || {}) },
     calendar: { ...defaults.calendar, ...(data.calendar || {}) }

@@ -133,3 +133,7 @@ create policy gallery_public_read on storage.objects
 drop policy if exists gallery_authenticated_upload on storage.objects;
 create policy gallery_authenticated_upload on storage.objects
   for insert with check (bucket_id = 'gallery' and auth.role() = 'authenticated');
+
+drop policy if exists gallery_authenticated_delete on storage.objects;
+create policy gallery_authenticated_delete on storage.objects
+  for delete using (bucket_id = 'gallery' and auth.role() = 'authenticated');

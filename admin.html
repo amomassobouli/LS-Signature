@@ -71,6 +71,7 @@
           </div>
           <button class="btn-outline" id="uploadImageBtn" type="button">Uploader et ajouter à la galerie</button>
           <div class="admin-message" id="uploadStatus"></div>
+          <div id="galleryManager" class="gallery-manager" aria-live="polite"></div>
         </div>
         <p>Modifiez le contenu du site ici. Vous pouvez ajouter des photos, changer les prix, ajuster le calendrier ou modifier les textes.</p>
         <textarea id="adminJson" class="admin-json" aria-label="Éditeur JSON de configuration"></textarea>
@@ -88,7 +89,7 @@
   <script src="js/content.js"></script>
   <script src="js/admin-auth.js"></script>
   <script src="js/env.js"></script>
-  <script src="js/supabase.js"></script>
-  <script src="js/admin.js"></script>
+  <script src="js/supabase.js?v=20260929-gallery-fix"></script>
+  <script src="js/admin.js?v=20260929-gallery-fix"></script>
 </body>
 </html>

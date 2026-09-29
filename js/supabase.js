@@ -74,6 +74,7 @@ async function supabaseSignIn(email, password) {
   localStorage.setItem(SUPABASE_SESSION_STORAGE_KEY, JSON.stringify({
     access_token: body.access_token,
     refresh_token: body.refresh_token,
+    expires_at: body.expires_at || Math.floor(Date.now() / 1000 + (body.expires_in || 3600)),
     email
   }));
   return body;
@@ -83,9 +84,42 @@ function supabaseSignOut() {
   clearSupabaseSession();
 }
 
-function supabaseHeaders() {
-  const { key } = getSupabaseConfig();
+async function ensureSupabaseSession() {
   const session = getSupabaseSession();
+  if (!session?.access_token) return null;
+
+  const expiresAt = Number(session.expires_at || 0);
+  if (expiresAt > Math.floor(Date.now() / 1000) + 60) return session;
+  if (!session.refresh_token) {
+    clearSupabaseSession();
+    throw new Error('Session Supabase expirée. Déconnectez-vous puis reconnectez-vous à l’espace admin.');
+  }
+
+  const { url, key } = getSupabaseConfig();
+  const response = await fetch(`${url}/auth/v1/token?grant_type=refresh_token`, {
+    method: 'POST',
+    headers: { apikey: key, 'Content-Type': 'application/json' },
+    body: JSON.stringify({ refresh_token: session.refresh_token })
+  });
+  const body = await response.json();
+  if (!response.ok) {
+    clearSupabaseSession();
+    throw new Error(body.error_description || body.msg || 'Session Supabase expirée. Reconnectez-vous.');
+  }
+
+  const refreshed = {
+    access_token: body.access_token,
+    refresh_token: body.refresh_token || session.refresh_token,
+    expires_at: body.expires_at || Math.floor(Date.now() / 1000 + (body.expires_in || 3600)),
+    email: session.email
+  };
+  localStorage.setItem(SUPABASE_SESSION_STORAGE_KEY, JSON.stringify(refreshed));
+  return refreshed;
+}
+
+async function supabaseHeaders() {
+  const { key } = getSupabaseConfig();
+  const session = await ensureSupabaseSession();
   return {
     apikey: key,
     Authorization: 'Bearer ' + (session?.access_token || key),
@@ -100,32 +134,33 @@ async function supabaseFetchSiteConfig() {
 
   try {
     const response = await fetch(`${url}/rest/v1/${SUPABASE_TABLE}?id=eq.${SUPABASE_ROW_ID}`, {
-      headers: supabaseHeaders()
+      headers: await supabaseHeaders()
     });
     if (!response.ok) {
-      console.warn('Supabase fetch failed', response.status, response.statusText);
-      return null;
+      const body = await response.text();
+      throw new Error(`Lecture Supabase refusée : ${response.status} ${response.statusText} ${body}`);
     }
     const json = await response.json();
     if (!json.length || !json[0].config) return null;
     return json[0].config;
   } catch (error) {
     console.warn('Supabase fetch error', error);
-    return null;
+    throw error;
   }
 }
 
 async function supabaseSaveSiteConfig(data) {
   const { url } = getSupabaseConfig();
   if (!url) throw new Error('Supabase non configuré.');
-  if (!hasSupabaseSession()) {
+  const session = await ensureSupabaseSession();
+  if (!session) {
     throw new Error('Connexion Supabase requise pour enregistrer (la clé anonyme seule ne suffit plus — connectez-vous avec un compte Supabase Auth).');
   }
 
   const response = await fetch(`${url}/rest/v1/${SUPABASE_TABLE}`, {
     method: 'POST',
     headers: {
-      ...supabaseHeaders(),
+      ...await supabaseHeaders(),
       Prefer: 'resolution=merge-duplicates,return=minimal',
     },
     body: JSON.stringify([{ id: SUPABASE_ROW_ID, config: data }])
@@ -157,7 +192,8 @@ async function supabaseUploadImage(file) {
 
   const safeName = file.name.replace(/[^a-zA-Z0-9.\-_]/g, '_');
   const path = `${Date.now()}-${safeName}`;
-  const session = getSupabaseSession();
+  const session = await ensureSupabaseSession();
+  if (!session) throw new Error('Reconnectez-vous à l’espace admin pour uploader une image.');
 
   const response = await fetch(`${url}/storage/v1/object/${SUPABASE_GALLERY_BUCKET}/${path}`, {
     method: 'POST',
@@ -175,4 +211,35 @@ async function supabaseUploadImage(file) {
   }
 
   return `${url}/storage/v1/object/public/${SUPABASE_GALLERY_BUCKET}/${path}`;
+}
+
+async function supabaseDeleteGalleryImage(imageUrl) {
+  const { url, key } = getSupabaseConfig();
+  if (!url || !key) throw new Error('Supabase non configuré.');
+  if (typeof imageUrl !== 'string') return false;
+
+  const image = new URL(imageUrl, window.location.href);
+  const project = new URL(url);
+  const publicPrefix = `/storage/v1/object/public/${SUPABASE_GALLERY_BUCKET}/`;
+  if (image.origin !== project.origin || !image.pathname.startsWith(publicPrefix)) return false;
+
+  const objectPath = image.pathname.slice(publicPrefix.length).split('/').map(decodeURIComponent).join('/');
+  if (!objectPath || objectPath.split('/').some((part) => part === '.' || part === '..')) return false;
+
+  const session = await ensureSupabaseSession();
+  if (!session) throw new Error('Reconnectez-vous à Supabase pour supprimer le fichier.');
+  const encodedPath = objectPath.split('/').map(encodeURIComponent).join('/');
+  const response = await fetch(`${url}/storage/v1/object/${SUPABASE_GALLERY_BUCKET}/${encodedPath}`, {
+    method: 'DELETE',
+    headers: {
+      apikey: key,
+      Authorization: 'Bearer ' + session.access_token
+    }
+  });
+
+  if (!response.ok) {
+    const body = await response.text();
+    throw new Error(`Échec de suppression Storage : ${response.status} ${response.statusText} ${body}`);
+  }
+  return true;
 }

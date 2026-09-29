@@ -19,6 +19,7 @@ let galleryFileInput;
 let galleryCaptionInput;
 let uploadImageBtn;
 let uploadStatus;
+let galleryManager;
 
 const STORAGE_KEY = 'lsSignatureAdminData';
 const AUTH_KEY = 'lsSignatureAdminAuth';
@@ -46,6 +47,7 @@ function initAdminElements() {
   galleryCaptionInput = document.getElementById('galleryCaption');
   uploadImageBtn = document.getElementById('uploadImageBtn');
   uploadStatus = document.getElementById('uploadStatus');
+  galleryManager = document.getElementById('galleryManager');
 }
 
 function getSavedData() {
@@ -82,9 +84,42 @@ function getCurrentData() {
   return getSavedData() || window.APP_DATA;
 }
 
-function renderEditor() {
-  const data = getCurrentData();
+function renderEditor(data = getCurrentData()) {
   adminJson.value = JSON.stringify(data, null, 2);
+  renderGalleryManager();
+}
+
+function renderGalleryManager() {
+  if (!galleryManager) return;
+  galleryManager.replaceChildren();
+
+  let gallery;
+  try {
+    const data = JSON.parse(adminJson.value);
+    gallery = Array.isArray(data.gallery) ? data.gallery : [];
+  } catch (err) {
+    galleryManager.textContent = 'Corrigez le JSON pour gérer les photos.';
+    return;
+  }
+
+  if (gallery.length === 0) {
+    galleryManager.textContent = 'Aucune photo dans la galerie.';
+    return;
+  }
+
+  gallery.forEach((item, index) => {
+    const row = document.createElement('div');
+    row.className = 'gallery-manager-item';
+    const caption = document.createElement('span');
+    caption.textContent = item.caption || `Photo ${index + 1}`;
+    const removeButton = document.createElement('button');
+    removeButton.className = 'btn-outline';
+    removeButton.type = 'button';
+    removeButton.dataset.galleryIndex = String(index);
+    removeButton.textContent = 'Supprimer';
+    row.append(caption, removeButton);
+    galleryManager.appendChild(row);
+  });
 }
 
 function renderSupabaseConfig() {
@@ -116,6 +151,17 @@ function unlockAdminPanel(message) {
   renderSupabaseConfig();
   updateRemoteActionState();
   setLoginMessage(message, 'success');
+  loadRemoteConfigIntoEditor();
+}
+
+async function loadRemoteConfigIntoEditor() {
+  if (!hasSupabaseConfig()) return;
+  try {
+    const data = await supabaseFetchSiteConfig();
+    if (data && typeof data === 'object') renderEditor(data);
+  } catch (err) {
+    setSupabaseStatus('Impossible de charger la configuration Supabase : ' + err.message, 'error');
+  }
 }
 
 async function loginAdmin() {
@@ -184,9 +230,12 @@ async function saveConfigSupabase() {
 
     saveSupabaseConfigLocal(config);
     await supabaseSaveSiteConfig(parsed);
+    saveData(parsed);
     setSupabaseStatus('Configuration enregistrée sur Supabase.', 'success');
+    return true;
   } catch (err) {
     setSupabaseStatus('Erreur Supabase : ' + err.message, 'error');
+    return false;
   }
 }
 
@@ -208,7 +257,7 @@ async function loadConfigSupabase() {
       return;
     }
 
-    adminJson.value = JSON.stringify(data, null, 2);
+    renderEditor(data);
     setSupabaseStatus('Configuration chargée depuis Supabase.', 'success');
   } catch (err) {
     setSupabaseStatus('Erreur Supabase : ' + err.message, 'error');
@@ -244,15 +293,55 @@ async function uploadGalleryImage() {
     if (!parsed || typeof parsed !== 'object') throw new Error('JSON invalide.');
     parsed.gallery = Array.isArray(parsed.gallery) ? parsed.gallery : [];
     parsed.gallery.push({ image: imageUrl, caption });
-    adminJson.value = JSON.stringify(parsed, null, 2);
+    renderEditor(parsed);
 
     galleryFileInput.value = '';
     galleryCaptionInput.value = '';
-    setUploadStatus('Photo ajoutée à la galerie ci-dessous — pensez à "Enregistrer" pour publier.', 'success');
+    if (await saveConfigSupabase()) {
+      setUploadStatus('Photo envoyée et galerie enregistrée sur Supabase.', 'success');
+    } else {
+      setUploadStatus('Image envoyée, mais la galerie n’a pas été enregistrée. Corrigez l’erreur Supabase puis cliquez sur « Enregistrer sur Supabase ».', 'error');
+    }
   } catch (err) {
     setUploadStatus('Erreur : ' + err.message, 'error');
   } finally {
     uploadImageBtn.disabled = false;
+  }
+}
+
+async function removeGalleryImage(index) {
+  let parsed;
+  try {
+    parsed = JSON.parse(adminJson.value);
+  } catch (err) {
+    setUploadStatus('JSON invalide : impossible de modifier la galerie.', 'error');
+    return;
+  }
+
+  if (!Array.isArray(parsed.gallery) || !parsed.gallery[index]) return;
+  const [removed] = parsed.gallery.splice(index, 1);
+  renderEditor(parsed);
+
+  if (hasSupabaseSession()) {
+    if (!(await saveConfigSupabase())) {
+      setUploadStatus('La photo est retirée du brouillon, mais la galerie n’a pas été enregistrée sur Supabase.', 'error');
+      return;
+    }
+
+    try {
+      const deletedFromStorage = await supabaseDeleteGalleryImage(removed.image);
+      setUploadStatus(
+        deletedFromStorage
+          ? 'Photo supprimée de la galerie et du stockage Supabase.'
+          : 'Photo retirée de la galerie. Le fichier externe n’a pas été supprimé du stockage.',
+        'success'
+      );
+    } catch (err) {
+      setUploadStatus('Photo retirée de la galerie en ligne, mais le fichier reste dans Supabase Storage : ' + err.message, 'error');
+    }
+  } else {
+    saveData(parsed);
+    setUploadStatus('Photo retirée du brouillon local. Connectez-vous à Supabase pour publier la modification.', 'success');
   }
 }
 
@@ -275,6 +364,11 @@ window.addEventListener('DOMContentLoaded', () => {
   saveSupabaseBtn.addEventListener('click', saveConfigSupabase);
   loadSupabaseBtn.addEventListener('click', loadConfigSupabase);
   uploadImageBtn.addEventListener('click', uploadGalleryImage);
+  adminJson.addEventListener('input', renderGalleryManager);
+  galleryManager.addEventListener('click', (event) => {
+    const button = event.target.closest('[data-gallery-index]');
+    if (button) removeGalleryImage(Number(button.dataset.galleryIndex));
+  });
   resetConfigBtn.addEventListener('click', resetConfig);
   restoreDefaultsBtn.addEventListener('click', restoreDefaults);
   logoutBtn.addEventListener('click', logoutAdmin);
@@ -287,6 +381,7 @@ window.addEventListener('DOMContentLoaded', () => {
     renderSupabaseConfig();
     updateRemoteActionState();
     setLoginMessage('Connexion active.', 'success');
+    loadRemoteConfigIntoEditor();
   } else {
     saveSupabaseBtn.disabled = true;
     uploadImageBtn.disabled = true;

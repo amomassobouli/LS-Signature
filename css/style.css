@@ -1078,6 +1078,28 @@ footer {
   resize: vertical;
 }
 
+.gallery-manager {
+  display: grid;
+  gap: 0.65rem;
+  margin-top: 1rem;
+}
+
+.gallery-manager-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.65rem 0.8rem;
+  border: 1px solid var(--rose-light);
+  border-radius: 6px;
+  color: var(--text-mid);
+  font-size: 0.85rem;
+}
+
+.gallery-manager-item button {
+  flex: 0 0 auto;
+}
+
 .admin-message {
   margin-top: 1rem;
   font-size: 0.9rem;
