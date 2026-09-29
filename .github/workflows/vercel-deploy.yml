@@ -11,11 +11,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Deploy to Vercel
-        uses: amondnet/vercel-action@v22
+        uses: amondnet/vercel-action@v42.3.0
         with:
           vercel-token: ${{ secrets.VERCEL_TOKEN }}
           vercel-org-id: team_uYgw5FW74oExVNMObREuL5K9
           vercel-project-id: prj_I03oSqCaUgVFmL4OCcKuU5m2DQra
           working-directory: .
-          prod: true
+          target: production
           github-comment: false

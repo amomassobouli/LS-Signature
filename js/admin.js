@@ -98,12 +98,23 @@ function setSupabaseStatus(message, type = 'info') {
   supabaseStatus.style.color = type === 'error' ? '#bf0a30' : '#276749';
 }
 
+function updateRemoteActionState() {
+  const hasSession = hasSupabaseSession();
+  saveSupabaseBtn.disabled = !hasSession;
+  uploadImageBtn.disabled = !hasSession;
+
+  if (!hasSession && hasSupabaseConfig()) {
+    setSupabaseStatus('Connexion Supabase requise : créez un compte Auth Supabase pour activer l’upload et la sauvegarde en ligne.', 'error');
+  }
+}
+
 function unlockAdminPanel(message) {
   localStorage.setItem(AUTH_KEY, 'true');
   adminLoginBox.style.display = 'none';
   adminPanel.style.display = 'block';
   renderEditor();
   renderSupabaseConfig();
+  updateRemoteActionState();
   setLoginMessage(message, 'success');
 }
 
@@ -139,6 +150,8 @@ function logoutAdmin() {
   adminPanel.style.display = 'none';
   adminEmailInput.value = '';
   adminPasswordInput.value = '';
+  saveSupabaseBtn.disabled = true;
+  uploadImageBtn.disabled = true;
   setLoginMessage('Vous êtes déconnecté.', 'success');
 }
 
@@ -158,6 +171,11 @@ async function saveConfigSupabase() {
     const config = getSupabaseConfig();
     if (!config.url || !config.key) {
       setSupabaseStatus('Veuillez configurer l’URL et la clé Supabase.', 'error');
+      return;
+    }
+
+    if (!hasSupabaseSession()) {
+      setSupabaseStatus('Connexion Supabase requise pour enregistrer en ligne. Créez un compte Auth Supabase avec l’email admin puis reconnectez-vous.', 'error');
       return;
     }
 
@@ -206,6 +224,11 @@ async function uploadGalleryImage() {
   const file = galleryFileInput.files[0];
   if (!file) {
     setUploadStatus('Choisissez une image.', 'error');
+    return;
+  }
+
+  if (!hasSupabaseSession()) {
+    setUploadStatus('Connexion Supabase requise pour uploader une image. Créez un compte Auth Supabase avec le même email admin, puis reconnectez-vous.', 'error');
     return;
   }
 
@@ -262,6 +285,10 @@ window.addEventListener('DOMContentLoaded', () => {
     adminPanel.style.display = 'block';
     renderEditor();
     renderSupabaseConfig();
+    updateRemoteActionState();
     setLoginMessage('Connexion active.', 'success');
+  } else {
+    saveSupabaseBtn.disabled = true;
+    uploadImageBtn.disabled = true;
   }
 });
